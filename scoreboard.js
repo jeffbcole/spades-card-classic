@@ -54,7 +54,7 @@ var Scoreboard = function () {
             p.push(game.players[j]);
         }
         p.sort(function(a,b) { 
-            return a.gameScore - b.gameScore;
+            return b.gameScore - a.gameScore;
         });
         
         for (var i=0; i<game.roundScores.length; i++) {
@@ -63,19 +63,26 @@ var Scoreboard = function () {
             roundSeparator.style.left = i*50 + 'px'
             container.appendChild(roundSeparator);
 
-            var roundNumber = document.createElement('div');
-            roundNumber.className = "scoreboardRoundNumber";
-            roundNumber.innerHTML = "Round " + (i + 1);
-            roundNumber.style.left = i*50 + 'px';
-            container.appendChild(roundNumber);
             for (var j=0; j<4; j++) {
-                var roundScore = document.createElement('div');
                 var curPlayerIndex = p[j].playerPositionInt;
+                var roundScore = document.createElement('div');
                 roundScore.className = 'scoreboardRoundEntry';
-                roundScore.innerHTML = "+" + game.roundScores[i][curPlayerIndex];
+                var score = game.roundScores[i][curPlayerIndex];
+                if (score >= 0) {
+                    roundScore.innerHTML = "+" + score;    
+                } else {
+                    roundScore.innerHTML = score; 
+                }
                 roundScore.style.left = i*50 + 'px';
-                roundScore.style.top = 15 + j*38 + 'px';
+                roundScore.style.top = 3 + j*38 + 'px';
                 container.appendChild(roundScore);
+
+                var roundTricksBid = document.createElement('div');
+                roundTricksBid.className = 'scoreboardRoundBidsEntry';
+                roundTricksBid.innerHTML = '(' + game.roundTricksTaken[i][curPlayerIndex] + "/" + game.roundBids[i][curPlayerIndex] + ')';
+                roundTricksBid.style.left = i*50 + 'px';
+                roundTricksBid.style.top = 20 + j*38 + 'px';
+                container.appendChild(roundTricksBid);
             }
         }
 
@@ -86,6 +93,9 @@ var Scoreboard = function () {
             background = "#000000FF";
             width = 200 + containerWidth + "px";
         }
+
+        var scoreboard = document.getElementById('scoreboard');
+        scoreboard.style.zIndex = 1000;
     }
 
     this.Contract = function() {
@@ -94,6 +104,11 @@ var Scoreboard = function () {
         }
         this.isExpanded = false;
 
+        var scoreboard = document.getElementById('scoreboard');
+        with (scoreboard.style) {
+            transition = "0.3s linear";
+            zIndex = 999;
+        }
         var scoreboardBackground = document.getElementById('scoreboardBackground');
         with (scoreboardBackground.style) {
             transition = "0.3s linear";
@@ -142,9 +157,11 @@ var Scoreboard = function () {
             } else {
                 playerBarFill.style.transition = "none";
             }
-            var percent = 100 * player.gameScore / game.losingScore;
+            var percent = 100 * player.gameScore / game.winningScore;
             if (percent > 100) {
                 percent = 100;
+            } else if (percent < 0) {
+                percent = 0;
             }
             playerBarFill.style.width = percent + "%";
 
@@ -159,7 +176,7 @@ var Scoreboard = function () {
                     p.push(game.players[j]);
                 }
                 p.sort(function(a,b) { 
-                    return a.gameScore - b.gameScore;
+                    return b.gameScore - a.gameScore;
                 });
                 for (var i=0; i<4; i++) {
                     var player = p[i];
@@ -174,7 +191,7 @@ var Scoreboard = function () {
                     p.push(game.players[j]);
                 }
                 p.sort(function(a,b) { 
-                    return a.gameScore - b.gameScore;
+                    return b.gameScore - a.gameScore;
                 });
                 for (var i=0; i<4; i++) {
                     var player = p[i];

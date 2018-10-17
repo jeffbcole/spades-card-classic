@@ -264,205 +264,16 @@ body {
 	overflow: hidden;
 }
 
-#mtContainer {
-	position: absolute;
-	margin-top: 50px;
-	left: 0px;
-	width: 400px;
-	height: 450px;
-	border-radius: 0px 0px 30px 30px;
-	overflow-x: scroll;
-	overflow-y: hidden;
+#menu_tutorial_body {
+	overflow:auto; 
+	font-size:12pt;
+	margin-top:50pt; 
+	margin-left:20pt;
+	width:90%; 
+	padding-right:10pt;
+	height:250pt; 
+	font-size:12pt;
 }
-
-#mtPager {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 2800px;
-	height: 420px;
-}
-
-.mtp {
-	position: absolute;
-	width: 400px;
-	height: 420px;
-	font-size: 12pt;
-}
-#mt0 {
-	left: 0px;
-}
-#mt1 {
-	left: 400px;
-}
-#mt2 {
-	left: 800px;
-}
-#mt3 {
-	left: 1200px;
-}
-#mt4 {
-	left: 1600px;
-}
-#mt5 {
-	left: 2000px;
-}
-#mt6 {
-	left: 2400px;
-}
-.mtBSVG {
-	width: 20px;
-	height: 40px;
-}
-#mtIncButton, #mtDecButton {
-	position: absolute;
-	top: 220px;
-	width: 30px;
-	height: 50px;
-	background: transparent;
-	border: none;
-}
-#mtIncButton:hover, #mtDecButton:hover {
-	background: #222222;
-	cursor: pointer;
-}
-#mtIncButton {
-	right: 0px;
-	padding: 5px;
-}
-#mtDecButton {
-	left: 0px;
-	padding: 5px;
-}
-
-
-#mtcr {
-    position: absolute;
-    top: -50px;
-    left: 70px;
-    width: 150px;
-	height: 169px;
-	transform: scale(0.33);
-}
-
-.mtcrb {
-    background: white;
-    border-radius: 3px;
-}
-
-#menu_suboptimal_history {
-	width:350px;
-	height: 420px;
-	top: 100%;
-}
-
-#menu_discard_analyzer {
-	width: 450px;
-	height: 530px;
-	top: 100%;
-	overflow: hidden;
-}
-
-#da_close_button {
-	position: absolute;
-	right: 0px;
-}
-
-#discard_analyzer_title {
-	font-size: 16pt;
-}
-
-.daTinyHandCard {
-	width: 21px;
-    height: 55px;
-    overflow: hidden;
-    border-radius: 7px 0px 0px 0px;
-    clip: rect(0px, 21px, 55px, 0px);
-    margin-left: 0px;
-}
-
-.daCardHandCell {
-	width: 21px;
-	height: 55px;
-	border:#FFFFFF 1px solid;
-	border-radius:7px 0px 0px 0px;
-	background: black;
-}
-
-#daHandTable {
-	margin-left: 140px;
-	margin-bottom: 2px;
-}
-
-#daHandCardsLabel {
-	font-size: 12pt;
-	margin-top: 2px;
-}
-
-.daTinyCard {
-    width: 21px;
-    height: 55px;
-    overflow: hidden;
-    border-radius: 7px 0px 0px 0px;
-    clip: rect(0px, 21px, 55px, 0px);
-    margin-left: 4px;
-}
-
-.daCardCell {
-    width:40px; 
-    height:60px;
-	border-radius: 7px 2px 2px 2px;
-	cursor: pointer;
-}
-
-.daCardCell:hover {
-	background: #222222;
-}
-
-#daPrompt {
-	font-size: 12pt;
-	margin-top: 35px;
-	width: 100%;
-	margin-left: 0%;
-	text-align: center;
-}
-
-#daCribIndicatorText {
-	font-size: 13pt;
-	position: absolute;
-	left: 300px;
-	top: 365px;
-	width: 150px;
-	text-align: center;
-}
-
-.daButton {
-	cursor: pointer;
-	border:#FFFFFF 1px solid;
-	border-radius:7px;
-	background:#000000;
-	color:white;
-	font-size: 13pt;
-	height: 110px;
-	width: 200px;
-	margin-left: 10px;
-	margin-top: 5px;
-}
-
-.daButton:hover {
-	background: #222222;
-}
-
-.daSwitch {
-	position: absolute;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-	top: 330px;
-	left: 345px;
-}
-
-.daSwitch input {display:none;}
 
  /* The switch - the box around the slider */
 .switch {
@@ -523,13 +334,13 @@ input:checked + .slider:before {
   border-radius: 50%;
 } 
 
-#losing_score_dropdown {
+#winning_score_dropdown {
 	font-size: 16pt;
 	background: #2196F3;
 	color:white;
 }
 
-#losing_score_dropdown option {
+#Winning_score_dropdown option {
 	background: #000; 
   	color: #fff; 
 	box-shadow: inset 20px 20px white;
@@ -623,410 +434,166 @@ input:checked + .slider:before {
 .card_back_red{background-image:url('images/card_back_red.jpg');}
 .card_back_green{background-image:url('images/card_back_green.jpg');}
 
-#menu_allplays {
-	width:420px;
-	height: 500px;
-	top: 100%;
-	border-radius: 10px;
-}
-
-#mallpcb {
+#choose_bid_view {
+	z-index: 999;
+	opacity:0;
+	pointer-events: none;
+	background:#000000;
+	border:#FFFFFF 2px solid;
+	border-radius:15px;
+	box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
 	position: absolute;
-	top: 0px;
-	right: 0px;
+	top:33%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
-#mallpd {
-	font-size: 11pt;
-	margin: 50px 5px 5px 5px;
+#choose_bid_title {
+	text-align:center;
+	font-size:22pt;
+	top:7px;
 }
 
-#mallplist {
-	margin-bottom: 0px;
-    width: 100%;
-    height: 388px;
-    overflow: auto;
-    text-align: center;
-	font-size: 8pt;
-	border-radius: 0px 0px 10px 10px;
+#choose_bid_row_1 {
+	display: block;
+	white-space: nowrap;
 }
 
-.mallpcribtitle {
-	position: absolute;
-	left: 20px;
-	width: 44px;
+#choose_bid_row_2 {
+	display: block;
+	margin-left: 30pt;
+	white-space: nowrap;
 }
 
-.mallphandtitle {
-	position: absolute;
-	left: 75px;
-	width: 90px;
+#choose_bid_row_3 {
+	display: block;
+	white-space: nowrap;
+	margin-bottom: 5pt;
 }
 
-.mallpmintitle {
-	position: absolute;
-	left: 180px;
-	width: 50px;
-	top: 13px;
-}
-
-.mallpminpts {
-	position: absolute;
-	left: 180px;
-	width: 50px;
-	top: 33px;
-	font-size: 18pt;
-}
-
-.mallpmaxtitle {
-	position: absolute;
-	left: 230px;
-	width: 50px;
-	top: 13px;
-}
-
-.mallpmaxpts {
-	position: absolute;
-	left: 230px;
-	width: 50px;
-	top: 33px;
-	font-size: 18pt;
-}
-
-.mallpcell {
-    width: 100%;
-    height: 83px;
-    position: relative;
+.choose_bid_button {
 	cursor: pointer;
-    font-size: 11pt;
-	margin-bottom: 3px;
-	display: none;
+	display: inline-block;
+	border:#FFFFFF 2px solid;
+	border-radius:15px;
+	background:#222222;
+	color:white;
+	width:50pt;
+	height:50pt;
+	font-size:18pt;
+	margin: 5pt;
 }
 
-.mallpcell:hover {
-    background: #222222;
+.choose_bid_button:hover {
+	background:#666666;
 }
 
-.mallpcell:active {
-    transform: scale(0.98);
-}
-
-.mallpbubble {
+#get_more_games_button {
+	cursor: pointer;
 	position: absolute;
-	width: 80px;
-    height: 80px;
-    top: 0px;
-    margin-left: 290px;
-    background: rgb(0, 0, 190);
-    border-radius: 20px;
-    text-align: center;
+	border:#FFFFFF 2px solid;
+	border-radius:15px;
+	background:#222222;
+	color:white;
+	width:100pt;
+	height:50pt;
+	font-size:12pt;
+	right: 15pt;
+	bottom: 10pt;
+	box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
 }
 
-.mallpGlare {
-    position: absolute;
-    width: 60px;
-    height: 20px;
-    margin-left: 10px;
-    margin-top: 1px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.5); /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(180deg, rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0)); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(180deg, rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0)); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(180deg, rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0));/* For Firefox 3.6 to 15 */
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0));
+#get_more_games_button:hover {
+	background:black;
 }
 
-.mallpBottomGlare {
-    position: absolute;
-    width: 80px;
-    height: 40px;
-    margin-left: 0px;
-    margin-top: 40px;
-    border-radius: 20px;
-    background: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0.3),rgba(255, 255, 255, 0) 20%); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(0deg, rgba(255, 255, 255, 0.3),rgba(255, 255, 255, 0) 20%); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(0deg, rgba(255, 255, 255, 0.3),rgba(255, 255, 255, 0) 20%);/* For Firefox 3.6 to 15 */
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.3),rgba(255, 255, 255, 0) 20%);
-}
-
-.mallpavgtitle {
+#play_more_games_menu {
 	position: absolute;
-	width: 80px;
-	top: 5px;
-}
-
-.mallpBubblePoints {
-    position: absolute;
-    width: 80px;
-    margin-top: 24px;
-    font-size: 21pt;
-    font-weight: bold;
-}
-
-.mallpBubblePointsLabel {
-    position: absolute;
-    width: 80px;
-    margin-top: 55px;
-    font-size: 12pt;
-}
-
-.mallpPlayed {
-	position: absolute;
-	width: 150px;
-	top: 60px;
-	left: 150px;
-	font-size: 10pt;
-	display: none;
-}
-
-.mallpDivider {
-	position: absolute;
-    width: 100%;
-    height: 1px;
-    margin-top: 82px;
-    background: white;
-}
-
-#menu_handAnalysis {
-	width:420px;
-	height: 500px;
-	border-radius: 10px;
-	font-size: 12pt;
-	text-align: center;
-	top: 100%;
-}
-
-#mhaclosebutton {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-}
-
-#mhahandtitle {
-	position: absolute;
-	left: 0px;
-	width: 100%;
-	margin-top: 45px;
-}
-
-#mhacribtitle {
-	position: absolute;
-	right: 0px;
-	width: 100px;
-	margin-top: 50px;
-}
-
-#mhacribpoints {
-	position: absolute;
-	right: 0px;
-	width: 100px;
-	margin-top: 115px;
-}
-
-#mhaplus {
-	position: absolute;
-	font-size: 20pt;
-	right: 0px;
-	width: 100%;
-	margin-top: 120px;
-}
-
-#mhainstructions {
-	position: absolute;
-	font-size: 11pt;
-	left: 0px;
-	width: 100%;
-	margin-top: 240px;
-}
-
-#mhaarrow {
-	position: absolute;
-	left: 200px;
-	margin-top: 150px;
-}
-
-#mhatopcards {
-	width: 100%;
-	height: 80px;
-	top: 160px;
-	background:#BB0000;
-	overflow-x: scroll;
-	overflow-y: hidden;
-	position: absolute;
-}
-
-#mhatopcardsContainer {
-	width: 1012px;
-	height: 80px;
-}
-
-#mhatopcardsOverlayLeft {
+	border:#FFFFFF 2px solid;
+	border-radius:15px;
+	background:black;
+	color:white;
+	width:180pt;
+	height:200pt;
+	right: 15pt;
+	bottom: -200pt;
+	box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+	z-index: 1000;
+	opacity:0;
 	pointer-events: none;
-	width: 150px;
-	height: 63px;
-	position: fixed;
-	top: 160px;
-	background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0));/* For Firefox 3.6 to 15 */
-    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0));
 }
 
-#mhatopcardsOverlayRight {
-	pointer-events: none;
-	width: 150px;
-	height: 63px;
-	position: fixed;
-	top: 160px;
-	right: 0px;
-	background: -webkit-linear-gradient(-90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(-90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(-90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0));/* For Firefox 3.6 to 15 */
-    background: linear-gradient(-90deg, rgba(0, 0, 0, 1) 15%,rgba(0, 0, 0, 0));
+#play_more_games_title {
+	text-align:center;
+	font-size:16pt;
+	position:absolute;
+	top:7px;
+	left:50%;
+	width:100pt;
+	transform: translate(-50%, 0%);	
 }
 
-.tinytopcard {
-	width: 21px;
-    height: 55px;
-    overflow: hidden;
-    border-radius: 7px 0px 0px 0px;
-	clip: rect(0px, 21px, 55px, 0px);
+.more_games_icon_button {
+	display: block;
+	position: relative;
+	cursor: pointer;
+	border:#FFFFFF 2px solid;
+	border-radius:5px;
+	background-image: url('images/woodboard.jpg');
+	background-size: contain;
+	color:white;
+	font-size:24pt;
+	width:90%;
+	height:50pt;
+	font-size:24pt;
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:17pt;
+	margin-bottom:5pt;
+}
+
+.more_games_icon_link {
+	display: block;
+}
+
+.more_games_icon_title {
 	position: absolute;
-	margin-top: 3px;
+	top: 10pt;
+	left: 60pt;
+	width: 100pt;
 }
 
-#mhatotalScore {
-	position: absolute;
-	font-size: 20pt;
-	left: 0px;
-	width: 100%;
-	margin-top: 260px;
+.more_games_icon_title1, .more_games_icon_title2 {
+	font-family: 'Times New Roman', Times, serif; 
+	text-shadow: 2pt 2pt rgba(0,0,0,0.5); 
 }
 
-#mhaHistorgram {
-	position: absolute;
-	width: 400px;
-	left: 10px;
-	height: 127px;
-	top: 295px;
-	background: #151515;
+.more_games_icon_title1 {
+	font-size: 18pt;
+	line-height: 18pt; 
 }
 
-#mhaMinLabel {
-	position: absolute;
-	left: 10px;
-	width: 100px;
-	top: 457px;
-	font-size: 11pt;
-}
-
-#mhaAvgLabel {
-	position: absolute;
-	left: 0px;
-	width: 100%;
-	top: 457px;
-	font-size: 11pt;
-}
-
-#mhaMaxLabel {
-	position: absolute;
-	right: 10px;
-	width: 100px;
-	top: 457px;
-	font-size: 11pt;
-}
-
-#mhaMin {
-	position: absolute;
-	left: 10px;
-	width: 100px;
-	top: 425px;
-	font-size: 22pt;
-}
-
-#mhaAvg {
-	position: absolute;
-	left: 0px;
-	width: 100%;
-	top: 425px;
-	font-size: 22pt;
-}
-
-#mhaMax {
-	position: absolute;
-	right: 10px;
-	width: 100px;
-	top: 425px;
-	font-size: 22pt;
-}
-
-.histBar {
-	position: absolute;
-	background: #2196F3;
-	border: white solid;
-	border-width: 1px 1px 0px 1px;
-}
-
-.histLabel {
-	position: absolute;
+.more_games_icon_title2 {
 	font-size: 8pt;
-	text-align: center;
+	line-height: 8pt; 
 }
 
-#menu_suboptimal_title {
-	font-size: 16pt;
-}
-
-#msoDesc {
-	width: 90%;
-	margin-left: 5%;
-	font-size: 10pt;
-	margin-top: 50px;
-}
-
-#menu_suboptimal_close_button {
+#more_games_icon_hearts {
 	position: absolute;
-	right: 0px;
+	background-image: url('images/app_icon_hearts.png'); /* TODO: better icon */
+	background-size: cover;
+	width: 50pt;
+	height: 40pt;
+	top: 5pt;
+	left: 7pt;
 }
 
-#msoNoHistory {
-	width: 80%;
-	left: 10%;
-	height: 100px;
+#more_games_icon_cribbage {
 	position: absolute;
-	top: 200px;
-	font-size: 12pt;
-	text-align: center;
-}
-
-#msoHistory {
-	position: absolute;
-	width: 350px;
-	height: 270px;
-	left: 0px;
-	top: 130px;
-	border-radius: 0px 0px 30px 30px;
-}
-
-.msoHLine {
-	stroke:rgb(50,50,50);
-	stroke-width:1
-}
-
-.msoStroke {
-	stroke: #2196F3;
-	stroke-width: 3px;
-	fill: none;
-}
-
-.msoAxisText {
-	fill: white;
-	font-size: 8pt;
-	text-anchor: middle;
-}
-
-.msoLast {
-	fill: white;
-	font-size: 13pt;
-	text-anchor: left;
+	background-image: url('images/app_icon_cribbage.png'); /* TODO: better icon */
+	background-size: cover;
+	width: 40pt;
+	height: 40pt;
+	top: 5pt;
+	left: 12pt;
 }

@@ -13,70 +13,73 @@ var Game = function () {
     // Members
     this.currentMoveStage = "";
     this.skillLevel = "";
-    this.losingScore = 0;
+    this.winningScore = 0;
+    this.isSpadesBroken = false;
     this.players = [];
     this.trickCards = [];
     this.roundNumber = 0;
+    this.dealerIndex = 0;
     this.leadIndex = 0;
     this.turnIndex = 0;
-    this.isHeartsBroken = false;
     this.cardsPlayedThisRound = [];
     this.roundScores = [];
+    this.roundBids = [];
+    this.roundTricksTaken = [];
 
     var deckTopIndex = 0;
     var cards = [
-        { id: 'AS', rank: 1, value: 14, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_Ace.jpg')" },
-        { id: '2S', rank: 2, value: 2, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_2.jpg')" },
-        { id: '3S', rank: 3, value: 3, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_3.jpg')" },
-        { id: '4S', rank: 4, value: 4, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_4.jpg')" },
-        { id: '5S', rank: 5, value: 5, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_5.jpg')" },
-        { id: '6S', rank: 6, value: 6, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_6.jpg')" },
-        { id: '7S', rank: 7, value: 7, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_7.jpg')" },
-        { id: '8S', rank: 8, value: 8, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_8.jpg')" },
-        { id: '9S', rank: 9, value: 9, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_9.jpg')" },
-        { id: 'TS', rank: 10, value: 10, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_10.jpg')" },
-        { id: 'JS', rank: 11, value: 11, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_Jack.jpg')" },
-        { id: 'QS', rank: 12, value: 12, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_Queen.jpg')" },
-        { id: 'KS', rank: 13, value: 13, suit: 'S', suitInt: 2, image: "url('images/Card_Spade_King.jpg')" },
-        { id: 'AD', rank: 1, value: 14, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_Ace.jpg')" },
-        { id: '2D', rank: 2, value: 2, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_2.jpg')" },
-        { id: '3D', rank: 3, value: 3, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_3.jpg')" },
-        { id: '4D', rank: 4, value: 4, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_4.jpg')" },
-        { id: '5D', rank: 5, value: 5, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_5.jpg')" },
-        { id: '6D', rank: 6, value: 6, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_6.jpg')" },
-        { id: '7D', rank: 7, value: 7, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_7.jpg')" },
-        { id: '8D', rank: 8, value: 8, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_8.jpg')" },
-        { id: '9D', rank: 9, value: 9, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_9.jpg')" },
-        { id: 'TD', rank: 10, value: 10, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_10.jpg')" },
-        { id: 'JD', rank: 11, value: 11, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_Jack.jpg')" },
-        { id: 'QD', rank: 12, value: 12, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_Queen.jpg')" },
-        { id: 'KD', rank: 13, value: 13, suit: 'D', suitInt: 1, image: "url('images/Card_Diamond_King.jpg')" },
-        { id: 'AC', rank: 1, value: 14, suit: 'C', suitInt: 0, image: "url('images/Card_Club_Ace.jpg')" },
-        { id: '2C', rank: 2, value: 2, suit: 'C', suitInt: 0, image: "url('images/Card_Club_2.jpg')" },
-        { id: '3C', rank: 3, value: 3, suit: 'C', suitInt: 0, image: "url('images/Card_Club_3.jpg')" },
-        { id: '4C', rank: 4, value: 4, suit: 'C', suitInt: 0, image: "url('images/Card_Club_4.jpg')" },
-        { id: '5C', rank: 5, value: 5, suit: 'C', suitInt: 0, image: "url('images/Card_Club_5.jpg')" },
-        { id: '6C', rank: 6, value: 6, suit: 'C', suitInt: 0, image: "url('images/Card_Club_6.jpg')" },
-        { id: '7C', rank: 7, value: 7, suit: 'C', suitInt: 0, image: "url('images/Card_Club_7.jpg')" },
-        { id: '8C', rank: 8, value: 8, suit: 'C', suitInt: 0, image: "url('images/Card_Club_8.jpg')" },
-        { id: '9C', rank: 9, value: 9, suit: 'C', suitInt: 0, image: "url('images/Card_Club_9.jpg')" },
-        { id: 'TC', rank: 10, value: 10, suit: 'C', suitInt: 0, image: "url('images/Card_Club_10.jpg')" },
-        { id: 'JC', rank: 11, value: 11, suit: 'C', suitInt: 0, image: "url('images/Card_Club_Jack.jpg')" },
-        { id: 'QC', rank: 12, value: 12, suit: 'C', suitInt: 0, image: "url('images/Card_Club_Queen.jpg')" },
-        { id: 'KC', rank: 13, value: 13, suit: 'C', suitInt: 0, image: "url('images/Card_Club_King.jpg')" },
-        { id: 'AH', rank: 1, value: 14, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_Ace.jpg')" },
-        { id: '2H', rank: 2, value: 2, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_2.jpg')" },
-        { id: '3H', rank: 3, value: 3, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_3.jpg')" },
-        { id: '4H', rank: 4, value: 4, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_4.jpg')" },
-        { id: '5H', rank: 5, value: 5, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_5.jpg')" },
-        { id: '6H', rank: 6, value: 6, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_6.jpg')" },
-        { id: '7H', rank: 7, value: 7, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_7.jpg')" },
-        { id: '8H', rank: 8, value: 8, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_8.jpg')" },
-        { id: '9H', rank: 9, value: 9, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_9.jpg')" },
-        { id: 'TH', rank: 10, value: 10, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_10.jpg')" },
-        { id: 'JH', rank: 11, value: 11, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_Jack.jpg')" },
-        { id: 'QH', rank: 12, value: 12, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_Queen.jpg')" },
-        { id: 'KH', rank: 13, value: 13, suit: 'H', suitInt: 3, image: "url('images/Card_Heart_King.jpg')" }
+        { id: 'AS', rank: 1, value: 14, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_Ace.jpg')" },
+        { id: '2S', rank: 2, value: 2, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_2.jpg')" },
+        { id: '3S', rank: 3, value: 3, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_3.jpg')" },
+        { id: '4S', rank: 4, value: 4, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_4.jpg')" },
+        { id: '5S', rank: 5, value: 5, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_5.jpg')" },
+        { id: '6S', rank: 6, value: 6, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_6.jpg')" },
+        { id: '7S', rank: 7, value: 7, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_7.jpg')" },
+        { id: '8S', rank: 8, value: 8, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_8.jpg')" },
+        { id: '9S', rank: 9, value: 9, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_9.jpg')" },
+        { id: 'TS', rank: 10, value: 10, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_10.jpg')" },
+        { id: 'JS', rank: 11, value: 11, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_Jack.jpg')" },
+        { id: 'QS', rank: 12, value: 12, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_Queen.jpg')" },
+        { id: 'KS', rank: 13, value: 13, suit: 'S', suitInt: 3, image: "url('images/Card_Spade_King.jpg')" },
+        { id: 'AD', rank: 1, value: 14, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_Ace.jpg')" },
+        { id: '2D', rank: 2, value: 2, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_2.jpg')" },
+        { id: '3D', rank: 3, value: 3, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_3.jpg')" },
+        { id: '4D', rank: 4, value: 4, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_4.jpg')" },
+        { id: '5D', rank: 5, value: 5, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_5.jpg')" },
+        { id: '6D', rank: 6, value: 6, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_6.jpg')" },
+        { id: '7D', rank: 7, value: 7, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_7.jpg')" },
+        { id: '8D', rank: 8, value: 8, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_8.jpg')" },
+        { id: '9D', rank: 9, value: 9, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_9.jpg')" },
+        { id: 'TD', rank: 10, value: 10, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_10.jpg')" },
+        { id: 'JD', rank: 11, value: 11, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_Jack.jpg')" },
+        { id: 'QD', rank: 12, value: 12, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_Queen.jpg')" },
+        { id: 'KD', rank: 13, value: 13, suit: 'D', suitInt: 0, image: "url('images/Card_Diamond_King.jpg')" },
+        { id: 'AC', rank: 1, value: 14, suit: 'C', suitInt: 1, image: "url('images/Card_Club_Ace.jpg')" },
+        { id: '2C', rank: 2, value: 2, suit: 'C', suitInt: 1, image: "url('images/Card_Club_2.jpg')" },
+        { id: '3C', rank: 3, value: 3, suit: 'C', suitInt: 1, image: "url('images/Card_Club_3.jpg')" },
+        { id: '4C', rank: 4, value: 4, suit: 'C', suitInt: 1, image: "url('images/Card_Club_4.jpg')" },
+        { id: '5C', rank: 5, value: 5, suit: 'C', suitInt: 1, image: "url('images/Card_Club_5.jpg')" },
+        { id: '6C', rank: 6, value: 6, suit: 'C', suitInt: 1, image: "url('images/Card_Club_6.jpg')" },
+        { id: '7C', rank: 7, value: 7, suit: 'C', suitInt: 1, image: "url('images/Card_Club_7.jpg')" },
+        { id: '8C', rank: 8, value: 8, suit: 'C', suitInt: 1, image: "url('images/Card_Club_8.jpg')" },
+        { id: '9C', rank: 9, value: 9, suit: 'C', suitInt: 1, image: "url('images/Card_Club_9.jpg')" },
+        { id: 'TC', rank: 10, value: 10, suit: 'C', suitInt: 1, image: "url('images/Card_Club_10.jpg')" },
+        { id: 'JC', rank: 11, value: 11, suit: 'C', suitInt: 1, image: "url('images/Card_Club_Jack.jpg')" },
+        { id: 'QC', rank: 12, value: 12, suit: 'C', suitInt: 1, image: "url('images/Card_Club_Queen.jpg')" },
+        { id: 'KC', rank: 13, value: 13, suit: 'C', suitInt: 1, image: "url('images/Card_Club_King.jpg')" },
+        { id: 'AH', rank: 1, value: 14, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_Ace.jpg')" },
+        { id: '2H', rank: 2, value: 2, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_2.jpg')" },
+        { id: '3H', rank: 3, value: 3, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_3.jpg')" },
+        { id: '4H', rank: 4, value: 4, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_4.jpg')" },
+        { id: '5H', rank: 5, value: 5, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_5.jpg')" },
+        { id: '6H', rank: 6, value: 6, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_6.jpg')" },
+        { id: '7H', rank: 7, value: 7, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_7.jpg')" },
+        { id: '8H', rank: 8, value: 8, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_8.jpg')" },
+        { id: '9H', rank: 9, value: 9, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_9.jpg')" },
+        { id: 'TH', rank: 10, value: 10, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_10.jpg')" },
+        { id: 'JH', rank: 11, value: 11, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_Jack.jpg')" },
+        { id: 'QH', rank: 12, value: 12, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_Queen.jpg')" },
+        { id: 'KH', rank: 13, value: 13, suit: 'H', suitInt: 2, image: "url('images/Card_Heart_King.jpg')" }
     ];
 
     this.GetCards = function () {
@@ -148,20 +151,9 @@ var Game = function () {
 
         scoreboard.Contract();
 
-        if (game.currentMoveStage === 'ChoosingPassCards') {
-            var tappedCardView = e.target;
-            if (tappedCardView.isClickable) {
-                currentDraggedCardView = tappedCardView;
-                currentDraggedCardView.style.transition = "none";
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-                currentDraggedCardView.startTime = Date.now();
-                currentDraggedCardView.startPosition = [e.clientX, e.clientY];
-                passingCardsPointerPressed();
-            }
-        } else if (game.currentMoveStage === 'ChoosingTrickCard') {
+        if (game.currentMoveStage === 'ChoosingTrickCard') {
+            autoPlayBoundaryY = GetHandCardLocation(0,6,13)[1] - cardLoweredHeight * 0.4;
+            
             var tappedCardView = e.target;
             if (tappedCardView.isClickable) {
                 currentDraggedCardView = tappedCardView;
@@ -196,6 +188,29 @@ var Game = function () {
         cardTouchFinished();
         document.onmouseup = null;
         document.onmousemove = null;
+    }
+
+    function cardTouchFinished() {    
+        // Check for tap
+        var distX = pos3 - currentDraggedCardView.startPosition[0];
+        var distY = pos4 - currentDraggedCardView.startPosition[1];
+        var distance = Math.sqrt(distX * distX + distY * distY);
+        var elapsed = Date.now() - currentDraggedCardView.startTime;
+        var tapped = elapsed < 500 && distance < 10;
+
+        if (game.currentMoveStage === 'ChoosingTrickCard') {
+            if (tapped) {
+                game.DropCardInTrickPile();
+            } else {
+                if (currentDraggedCardView.offsetTop < autoPlayBoundaryY) {
+                    game.DropCardInTrickPile();
+                } else {
+                    AnimatePlayerHandCardsIntoPosition('South', "0.3s");
+                }
+            }
+        }
+         
+        lowerCard(currentDraggedCardView);
     }
 
     /**
@@ -500,10 +515,14 @@ var Game = function () {
     this.InitializeGame = function(difficulty) {
         // Game properties
         this.skillLevel = difficulty;
-        this.losingScore = Number(GetSetting('setting_losing_score'));
+        this.winningScore = Number(GetSetting('setting_winning_score'));
         this.cardsPlayedThisRound = [];
         this.trickCards = [];
         this.roundNumber = 0;
+        this.dealerIndex = 0;
+        this.leadIndex = 0;
+        this.turnIndex = 0;
+        this.isSpadesBroken = false;
         this.currentMoveStage = 'None';
         this.roundScores = [];
 
@@ -593,8 +612,7 @@ var Game = function () {
             position = eval(playerScore.positionFunction);
             playerScore.style.left = position[0] + 'px';
             playerScore.style.top = position[1] + 'px';
-            var score = this.players[i].currentRoundPoints > 0 ? this.players[i].currentRoundPoints : "";
-            playerScore.innerText = score;
+            playerScore.innerText = "";
         }
         setTimeout(function () {
             for (var i=0; i<4; i++) {
@@ -617,12 +635,11 @@ var Game = function () {
             position = eval(playerScore.positionFunction);
             playerScore.style.left = position[0] + 'px';
             playerScore.style.top = position[1] + 'px';
-            var score = this.players[i].currentRoundPoints > 0 ? this.players[i].currentRoundPoints : "";
-            playerScore.innerText = score;
+            playerScore.innerText = "";
         
             if (i===0) {
                 var playerName = document.getElementById('player_name_' + this.players[i].playerPosition);
-                playerName.style.transition = "0.5s linear";
+                playerName.style.transition = "0.2s linear";
                 var pos = eval(playerName.positionFunction);
                 playerName.style.left = pos[0] + 'px';
                 playerName.style.top = pos[1] + 'px';
@@ -633,7 +650,7 @@ var Game = function () {
     function GetPlayerNamePosition(playerPosition) {
         switch (playerPosition) {
             case 'South':
-                if (game.players[0].currentRoundPoints > 0) {
+                if (game.players[0].currentRoundBid >= 0) {
                     return [window.innerWidth*0.5-220,window.innerHeight-350];
                 } else {
                     return [window.innerWidth*0.5-220,window.innerHeight-330];
@@ -652,11 +669,11 @@ var Game = function () {
             case 'South':
                 return [window.innerWidth*0.5-220,window.innerHeight-330];
             case 'West':
-                return [40,270];
+                return [50,270];
             case 'North':
                 return [window.innerWidth*0.5 + 160,50];
             default:
-                return [window.innerWidth-140,270];
+                return [window.innerWidth-150,270];
         }
     }
 
@@ -670,22 +687,61 @@ var Game = function () {
         }
     }
 
+    function AnimatePlayerHandCardsIntoPosition(playerPosition, duration) {
+        var player;
+        var flipUp = false;
+        switch (playerPosition) {
+            case 'South':
+                player = game.players[0];
+                flipUp = true;
+                break;
+            case 'West':
+                player = game.players[1];
+                break;
+            case 'North':
+                player = game.players[2];
+                break;
+            default:
+                player = game.players[3];
+                break;
+        }
+        
+        for (var i=0; i<player.cards.length; i++) {
+            var cardView = player.cards[i].cardView;
+            if (flipUp) {
+                flipUpCard(cardView);
+            } else {
+                flipDownCard(cardView, true);
+            }
+            cardView.positionIndex = i;
+            cardView.positionFunction = "GetHandCardLocation('" + playerPosition + "', " + i + ", " + player.cards.length + ")";
+            cardView.style.zIndex = i + 100;
+            with (cardView.style) {
+                var aposition = eval(cardView.positionFunction);
+                transition =  duration + " ease-out";
+                transitionDelay = '0ms';
+                left = aposition[0] + "px";
+                top = aposition[1] + "px";
+                transform = 'rotate(' + aposition[2] + 'deg)';
+            }
+        }
+    }
+
     this.AnimateDealCardsForRound = function() {
         this.roundNumber = this.roundNumber + 1;
         this.trickCards = [];
         for (var i=0; i<this.players.length; i++) {
             var player = this.players[i];
             player.cards = [];
-            player.passingCards = [];
-            player.receivedCards = [];
-            player.currentRoundPoints = 0;
+            player.currentRoundBid = -1;
+            player.currentRoundTricksTaken = -1;
             player.isShownVoidInSuit = [false,false,false,false];
         }
 
         this.ResetPlayerRoundScores();
 
         // Deal cards for round
-        this.isHeartsBroken = false;
+        this.isSpadesBroken = false;
         this.cardsPlayedThisRound = [];
         shuffle(cards);
         deckTopIndex = cards.length-1;
@@ -853,345 +909,93 @@ var Game = function () {
                 cardView.style.transform = 'rotate(' + position[2] + 'deg)';
                 setTimeout(flipUpCard, i * 80, cardView);
             }
-            game.currentMoveStage = "ChoosingPassCards";
+            game.currentMoveStage = "ChoosingBids";
         }, 50);
         
         setTimeout(function() {
-            var passingIndex = game.roundNumber % 4;
-            switch (passingIndex) {
-            case 0:
-                game.StartTrickTaking();
-                break;
-            default:
-                game.GetPassingCardsFromAllPlayers(passingIndex);
-                break;
-        }
+            bidsReceived = 0;
+            currentBiddingPlayerIndex = (game.dealerIndex + 1)%4;
+            game.leadIndex = currentBiddingPlayerIndex;
+            var player = game.players[currentBiddingPlayerIndex];
+            player.ChooseBid();
+        
         }, 500);
     }
 
-    function AnimatePlayerHandCardsIntoPosition(playerPosition, duration) {
-        var player;
-        var flipUp = false;
-        switch (playerPosition) {
-            case 'South':
-                player = game.players[0];
-                flipUp = true;
-                break;
-            case 'West':
-                player = game.players[1];
-                break;
-            case 'North':
-                player = game.players[2];
-                break;
-            default:
-                player = game.players[3];
-                break;
-        }
-        
-        for (var i=0; i<player.cards.length; i++) {
-            var cardView = player.cards[i].cardView;
-            if (flipUp) {
-                flipUpCard(cardView);
-            } else {
-                flipDownCard(cardView, true);
-            }
-            cardView.positionIndex = i;
-            cardView.positionFunction = "GetHandCardLocation('" + playerPosition + "', " + i + ", " + player.cards.length + ")";
-            cardView.style.zIndex = i + 100;
-            with (cardView.style) {
-                var aposition = eval(cardView.positionFunction);
-                transition =  duration + " ease-out";
-                transitionDelay = '0ms';
-                left = aposition[0] + "px";
-                top = aposition[1] + "px";
-                transform = 'rotate(' + aposition[2] + 'deg)';
-            }
-        }
-    }
+    var bidsReceived = 0;
+    var currentBiddingPlayerIndex = 0;
+    
+    this.PromptPlayerToChooseBid = function() {
 
-    this.GetPassingCardsFromAllPlayers = function(passingIndex) {
-        for (var i=1; i<4; i++) {
-            var player = this.players[i];
-            player.ChoosePassingCards();
-        }
-
-        currentPassingCardView_0 = null;
-        currentPassingCardView_1 = null;
-        currentPassingCardView_2 = null;
-
-        var selectPassingCardsMessage = document.getElementById('select_passing_cards_message');
-        switch (passingIndex) {
-            case 0:
-                selectPassingCardsMessage.innerText = "Select 3 cards to pass left:";
-                break;
-            case 1:
-                selectPassingCardsMessage.innerText = "Select 3 cards to pass right:";
-                break;
-            default:
-                selectPassingCardsMessage.innerText = "Select 3 cards to pass across:";
-                break;
-        }
-        selectPassingCardsMessage.positionFunction = "GetPassingCardsMessageLocation()";
-        var loc = eval(selectPassingCardsMessage.positionFunction);
-        selectPassingCardsMessage.style.transition = "none";
-        selectPassingCardsMessage.style.left = loc[0] + "px";
-        selectPassingCardsMessage.style.top = loc[1] + "px";
-        with (selectPassingCardsMessage.style) {
-            visibility = "visible";
-            transition = "0.5s linear";
-            transitionDelay = "1s";
-            opacity = 1;
-        }
-
-        for (var i=0; i<3; i++) {
-            var selectPassingCardsRegion = document.getElementById('select_passing_cards_region_' + i);
-            selectPassingCardsRegion.positionFunction = "GetPassingCardsLocation(" + i + ")";
-            var loc = eval(selectPassingCardsRegion.positionFunction);
-            selectPassingCardsRegion.style.transition = "none";
-            selectPassingCardsRegion.style.left = loc[0] + "px";
-            selectPassingCardsRegion.style.top = loc[1] + "px";
-            with (selectPassingCardsRegion.style) {
-                visibility = "visible";
-                transition = "0.5s linear";
-                transitionDelay = "1s";
-                opacity = 1;
-            }
-        }
-
-        this.currentMoveStage = "ChoosingPassCards";
-        
         if (this.skillLevel === 'Easy' || GetSetting('setting_hints')) {
-          ShowHintButton(1000);
-        }
-    }
-
-    function GetPassingCardsMessageLocation() {
-        return [0, 100];
-    }
-
-    function GetPassingCardsLocation(index)
-    {
-        var left = 0;
-        switch (index) {
-            case 0:
-                left = window.innerWidth*0.5 - 150;
-                break;
-            case 1:
-                left = window.innerWidth*0.5;
-                break;
-            default:
-                left = window.innerWidth*0.5 + 150;
-                break;
+            ShowHintButton(0);
         }
 
-        return [left- cardLoweredWidth*0.5, 140];
-    }
-
-    var currentPassingCardView_0 = null;
-    var currentPassingCardView_1 = null;
-    var currentPassingCardView_2 = null;
-    var currentDraggedCardWasLastInHand;
-
-    function passingCardsPointerPressed() {
-
-        // Find the autoplay line for dropped cards
-        if (currentDraggedCardView === currentPassingCardView_0) {
-            currentDraggedCardView.style.zIndex = 200;
-            autoPlayBoundaryY = GetPassingCardsLocation(0)[1] + 70;
-            currentPassingCardView_0 = null;
-            currentDraggedCardWasLastInHand = false;
-            HidePassCardsButton();
-            game.players[0].passingCards.splice(game.players[0].passingCards.indexOf(currentDraggedCardView.card),1);
-            game.players[0].cards.push(currentDraggedCardView.card);
-            // Sort the players hand
-            game.players[0].cards.sort(function(a,b) {
-                if (a.suit != b.suit) {
-                    return a.suitInt - b.suitInt;
-                } else {
-                    return a.value - b.value;
-                }
-            });
-        } else if (currentDraggedCardView === currentPassingCardView_1) {
-            currentDraggedCardView.style.zIndex = 200;
-            autoPlayBoundaryY = GetPassingCardsLocation(0)[1] + 70;
-            currentPassingCardView_1 = null;
-            currentDraggedCardWasLastInHand = false;
-            HidePassCardsButton();
-            game.players[0].passingCards.splice(game.players[0].passingCards.indexOf(currentDraggedCardView.card),1);
-            game.players[0].cards.push(currentDraggedCardView.card);
-            // Sort the players hand
-            game.players[0].cards.sort(function(a,b) {
-                if (a.suit != b.suit) {
-                    return a.suitInt - b.suitInt;
-                } else {
-                    return a.value - b.value;
-                }
-            });
-        } else if (currentDraggedCardView === currentPassingCardView_2) {
-            currentDraggedCardView.style.zIndex = 200;
-            autoPlayBoundaryY = GetPassingCardsLocation(0)[1] + 70;
-            currentPassingCardView_2 = null;
-            currentDraggedCardWasLastInHand = false;
-            HidePassCardsButton();
-            game.players[0].passingCards.splice(game.players[0].passingCards.indexOf(currentDraggedCardView.card),1);
-            game.players[0].cards.push(currentDraggedCardView.card);
-            // Sort the players hand
-            game.players[0].cards.sort(function(a,b) {
-                if (a.suit != b.suit) {
-                    return a.suitInt - b.suitInt;
-                } else {
-                    return a.value - b.value;
-                }
-            });
-        } else {
-            autoPlayBoundaryY = GetHandCardLocation('South', 0, 13)[1] - 50;
-            currentDraggedCardWasLastInHand = true;
-        }
-        raiseCard(currentDraggedCardView);
-    }
-
-    function cardTouchFinished() {
-        
-        // Check for tap
-        var distX = pos3 - currentDraggedCardView.startPosition[0];
-        var distY = pos4 - currentDraggedCardView.startPosition[1];
-        var distance = Math.sqrt(distX * distX + distY * distY);
-        var elapsed = Date.now() - currentDraggedCardView.startTime;
-        var tapped = elapsed < 500 && distance < 10;
-
-        if (game.currentMoveStage === 'ChoosingPassCards') {
-            if (currentDraggedCardWasLastInHand) {
-                if (tapped || (currentDraggedCardView.offsetTop < autoPlayBoundaryY)) {
-                    DropCurrentDraggedCardViewIntoPassingSlot();
-                } else {
-                    AnimatePlayerHandCardsIntoPosition('South', "0.3s");
-                }
-            } else {
-                if (tapped || currentDraggedCardView.offsetTop > autoPlayBoundaryY) {
-                    AnimatePlayerHandCardsIntoPosition('South', "0.3s");
-                } else {
-                    DropCurrentDraggedCardViewIntoPassingSlot();
-                }
-            }
-        } else if (game.currentMoveStage === 'ChoosingTrickCard') {
-            if (tapped) {
-                game.DropCardInTrickPile();
-            } else {
-                if (currentDraggedCardView.offsetTop < autoPlayBoundaryY) {
-                    game.DropCardInTrickPile();
-                } else {
-                    AnimatePlayerHandCardsIntoPosition('South', "0.3s");
-                }
-            }
-        }
-        
-        
-        lowerCard(currentDraggedCardView);
-    }
-
-    function DropCurrentDraggedCardViewIntoPassingSlot()
-    {
-        var player = game.players[0];
-        if (player.passingCards.length < 3) {
-            var indexOfCard = player.cards.indexOf(currentDraggedCardView.card);
-            var card = player.cards[indexOfCard];
-            player.cards.splice(indexOfCard, 1);
-            player.passingCards.push(card);
-            
-            // Pick the closest passing spot
-            var closestOpenPassingIndex = -1;
-            var closestDistance = 10000000;
-            for (var i=0; i<3; i++) {
-                switch (i) {
-                    case 0:
-                        if (currentPassingCardView_0 !== null) {
-                            continue;
-                        }
-                        break;
-                    case 1:
-                        if (currentPassingCardView_1 !== null) {
-                            continue;
-                        }
-                        break;
-                    case 2:
-                        if (currentPassingCardView_2 !== null) {
-                            continue;
-                        }
-                        break;
-                }
-                var spotLoc = GetPassingCardsLocation(i);
-                var distX = currentDraggedCardView.offsetLeft - spotLoc[0];
-                var distY = currentDraggedCardView.offsetTop - spotLoc[1];
-                var dist = Math.sqrt(distX*distX + distY+distY);
-                if (dist < closestDistance) {
-                    closestDistance = dist;
-                    closestOpenPassingIndex = i;
-                }
-            }
-            
-            switch (closestOpenPassingIndex) {
-                case 0:
-                    currentPassingCardView_0 = currentDraggedCardView;
-                    break;
-                case 1:
-                    currentPassingCardView_1 = currentDraggedCardView;
-                    break;
-                case 2:
-                    currentPassingCardView_2 = currentDraggedCardView;
-                    break;
-                default:
-                    AnimatePlayerHandCardsIntoPosition('South', "0.3s");
-                    return;
-
-            }
-            currentDraggedCardView.positionFunction = 'GetPassingCardsLocation(' + closestOpenPassingIndex + ')';
-            var pos = eval(currentDraggedCardView.positionFunction);
-            with (currentDraggedCardView.style) {
-                transition =  "0.3s ease-out";
-                transitionDelay = '0ms';
-                left = pos[0] + "px";
-                top = pos[1] + "px";
-                transform = 'rotate(0deg)';
-                zIndex = 0;
-            }
-
-            if (player.passingCards.length === 3) {
-                ShowPassCardsButton();
-            }
-        }
-        
-        AnimatePlayerHandCardsIntoPosition('South', "0.3s");
-    }
-
-    function ShowPassCardsButton() {
-        var passCardsRegion = document.getElementById('confirm_passing_cards_region');
-        passCardsRegion.positionFunction = 'GetPassingCardsConfirmLocation()';
-        var loc = eval(passCardsRegion.positionFunction);
-        passCardsRegion.style.transition = 'none';
-        passCardsRegion.style.left = loc[0] + 'px';
-        passCardsRegion.style.top = loc[1] + 'px';
-        passCardsRegion.style.visibility = "visible";
-        with (passCardsRegion.style) {
-            transition = "0.3s linear";
+        var el = document.getElementById('choose_bid_view');
+        with(el.style) {
+            WebkitTransition = MozTransition = OTransition = msTransition = "0.5s linear";
             opacity = 1;
+            visibility = "visible";
             pointerEvents = "auto";
         }
     }
 
-    function GetPassingCardsConfirmLocation() {
-        var loc = GetPassingCardsLocation(0);
-        return [window.innerWidth*0.5, loc[1] + 185];
+    this.OnChooseBidButtonPressed = function(bid) {
+        var player = game.players[0];
+        player.currentRoundBid = bid;
+        this.OnPlayerFinishedChoosingBid(player);
     }
 
-    function HidePassCardsButton() {
-        var confirmCribRegion = document.getElementById('confirm_passing_cards_region');
-        with (confirmCribRegion.style) {
-            transition = "0.2s linear";
-            opacity = 0;
-            pointerEvents = "none";
+    this.OnPlayerFinishedChoosingBid = function(player) {
+        if (player.isHuman) {
+            var el = document.getElementById('choose_bid_view');
+            with(el.style) {
+                WebkitTransition = MozTransition = OTransition = msTransition = "0.4s ease-in";
+                opacity = 0;
+                pointerEvents = "none";
+            }
+        }
+
+        bidsReceived = bidsReceived + 1;
+        if (bidsReceived == 4) {
+            for (var i=0; i<4; i++) {
+                var player = game.players[i];
+                player.currentRoundTricksTaken = 0;
+                UpdatePlayerRoundScore(player);
+            }
+
+            setTimeout(function(aGame) {
+                aGame.StartTrickTaking();
+            }, 1000, this);
+
+        } else {
+            UpdatePlayerRoundScore(player);
+            currentBiddingPlayerIndex = currentBiddingPlayerIndex + 1;
+            var player = game.players[currentBiddingPlayerIndex%4];
+            player.ChooseBid();
         }
     }
 
+    function UpdatePlayerRoundScore(player) {
+        var playerScore = document.getElementById('player_score_' + player.playerPosition);
+        playerScore.positionFunction = "GetPlayerScorePosition('" + player.playerPosition + "')";
+        position = eval(playerScore.positionFunction);
+        playerScore.style.left = position[0] + 'px';
+        playerScore.style.top = position[1] + 'px';
+        if (player.currentRoundTricksTaken < 0) {
+            playerScore.innerText = "Bid: " + player.currentRoundBid;        
+        } else {
+            playerScore.innerText = player.currentRoundTricksTaken + "/" + player.currentRoundBid;        
+        }
+        
+        if (player.isHuman) {
+            var playerName = document.getElementById('player_name_South');
+            playerName.style.transition = "0.2s linear";
+            var pos = eval(playerName.positionFunction);
+            playerName.style.left = pos[0] + 'px';
+            playerName.style.top = pos[1] + 'px';
+        }
+    }
     
     function GetHintButtonPosition() {
         var left = window.innerWidth*0.5 + 250;
@@ -1229,20 +1033,23 @@ var Game = function () {
         this.BumpHintCards();
     }
 
-    this.OnTestButtonClick = function() {
-        var player = this.players[0];
-        var bestResult = FindOptimalPlayForCurrentPlayer(game, true, true);
-        BumpCard(bestResult.optimalCard.cardView);
-    }
-
     this.BumpHintCards = function() {
         var optimalCards = [];
-        if (this.currentMoveStage === 'ChoosingPassCards') {
+        if (this.currentMoveStage === 'ChoosingBids') {
             var player = this.players[0];
-            var bestCards = player.FindBestPassingCards();
-            for (var i=0; i<bestCards.length; i++) {
-                optimalCards.push(bestCards[i]);
-            }
+            var bid = player.FindBestBid(game);
+            var button = document.getElementById('choose_bid_button_' + bid);
+            
+            with (button.style) {
+                transition = 'none';
+                transform = 'scale(0)';
+            }   
+            setTimeout(function() {
+                with (button.style) {
+                    transition = "0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)";
+                    transform = 'scale(1)';
+                }
+            }, 100); 
             
         } else if (this.currentMoveStage === 'ChoosingTrickCard') {
             var player = this.players[0];
@@ -1253,185 +1060,10 @@ var Game = function () {
         BumpCards(optimalCards, 0);
     }
 
-    this.passingCardsConfirmed = function() {
-        // PerformCardPassingBetweenPlayers
-        this.currentMoveStage = 'None';
-        HidePassCardsButton();
-        HideHintButton();
-
-        var player = this.players[1];
-        for (var i=0; i<player.passingCards.length; i++) {
-            var card =  player.passingCards[i];
-            var cardView = card.cardView;
-            with (cardView.style) {
-                transition = "0.3s ease-in-out";
-                left = (cardView.offsetLeft + 30) + "px";
-            }
-        }
-
-        player = this.players[2];
-        for (var i=0; i<player.passingCards.length; i++) {
-            var card =  player.passingCards[i];
-            var cardView = card.cardView;
-            with (cardView.style) {
-                transition = "0.3s ease-in-out";
-                top = (cardView.offsetTop + 30) + "px";
-            }
-        }
-
-        player = this.players[3];
-        for (var i=0; i<player.passingCards.length; i++) {
-            var card =  player.passingCards[i];
-            var cardView = card.cardView;
-            with (cardView.style) {
-                transition = "0.3s ease-in-out";
-                left = (cardView.offsetLeft - 30) + "px";
-            }
-        }
-
-        for (var i=0; i<3; i++) {
-            var selectPassingCardsRegion = document.getElementById('select_passing_cards_region_' + i);
-            with (selectPassingCardsRegion.style) {
-                transition = "0.3s linear";
-                transitionDelay = "0s";
-                opacity = 0;
-            }
-        }
-
-        var passingCardsMessage = document.getElementById('select_passing_cards_message');
-        with (passingCardsMessage.style) {
-            transition = "0.3s linear";
-            transitionDelay = "0s";
-            opacity = 0;
-        }
-
-        setTimeout(() => {
-            var passingIndex = game.roundNumber % 4;
-            switch (passingIndex) {
-                case 1: {
-                    // Pass left
-                    for (var i=0; i<4; i++) {
-                        var player = game.players[i];
-                        var passPlayer = game.players[(i+1)%4];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            var idx = Math.floor(Math.random() * Math.floor(passPlayer.cards.length));
-                            passPlayer.cards.splice(idx, 0, player.passingCards[j]);
-                        }
-                        passPlayer.receivedCards = [];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            passPlayer.receivedCards.push(player.passingCards[j]);
-                        }
-                        player.passingCards = [];
-                    }
-                } break;
-                case 2: {
-                    // Pass right
-                    for (var i=0; i<4; i++) {
-                        var player = game.players[i];
-                        var passPlayer = game.players[(i-1+4)%4];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            var idx = Math.floor(Math.random() * Math.floor(passPlayer.cards.length));
-                            passPlayer.cards.splice(idx, 0, player.passingCards[j]);
-                        }
-                        passPlayer.receivedCards = [];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            passPlayer.receivedCards.push(player.passingCards[j]);
-                        }
-                        player.passingCards = [];
-                    }
-                } break;
-                case 3: {
-                    // Pass across
-                    for (var i=0; i<4; i++) {
-                        var player = game.players[i];
-                        var passPlayer = game.players[(i+2)%4];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            var idx = Math.floor(Math.random() * Math.floor(passPlayer.cards.length));
-                            passPlayer.cards.splice(idx, 0, player.passingCards[j]);
-                        }
-                        passPlayer.receivedCards = [];
-                        for (var j=0; j<player.passingCards.length; j++) {
-                            passPlayer.receivedCards.push(player.passingCards[j]);
-                        }
-                        player.passingCards = [];
-                    }
-                } break;
-                default:
-                    break;
-            }
-
-            AnimatePassingCardsIntoHands();
-        }, 350);
-    }
-
-    function AnimatePassingCardsIntoHands() {
-        AnimatePlayerHandCardsIntoPosition('West', "1s");
-        AnimatePlayerHandCardsIntoPosition('North', "1s");
-        AnimatePlayerHandCardsIntoPosition('East', "1s");
-
-        var player = game.players[0];
-        player.receivedCards.sort(function(a,b) {
-            if (a.suit != b.suit) {
-                return a.suitInt - b.suitInt;
-            } else {
-                return a.value - b.value;
-            }
-        });
-
-        for (var i=0; i<3; i++) {
-            var card = player.receivedCards[i];
-            var cardView = card.cardView;
-            flipUpCard(cardView);
-            var loc = GetPassingCardsLocation(i);
-            with (cardView.style) {
-                transition = "0.8s ease-in-out";
-                left = loc[0] + 'px';
-                top = loc[1] + 50 + 'px';
-                transform = 'rotate(0deg)';
-            }
-        }
-
-        player.cards.sort(function(a,b) {
-            if (a.suit != b.suit) {
-                return a.suitInt - b.suitInt;
-            } else {
-                return a.value - b.value;
-            }
-        });
-
-        for (var i=0; i<player.cards.length; i++) {
-            var cardView = player.cards[i].cardView;
-            cardView.style.zIndex = 100 + i;
-        }
-
-        setTimeout(function() {
-            AnimatePlayerHandCardsIntoPosition('South', '1s');
-            setTimeout(function() {
-                game.StartTrickTaking();
-            }, 1500);
-        }, 2000);
-    }
-
     this.StartTrickTaking = function() {
-        // Determine the lead index player
-        for (var i=0; i<this.players.length; i++) {
-            var leadFound = false;
-            var player = this.players[i];
-            for (var j=0; j<player.cards.length; j++) {
-                var card = player.cards[j];
-                if (card.id === '2C') {
-                    leadFound = true;
-                    this.leadIndex = i;
-                    break;
-                }
-            }
-            if (leadFound) {
-                break;
-            }
-        }
-
-        this.turnIndex = this.leadIndex;
-        var nextPlayer = this.players[this.turnIndex];
+        
+        this.turnIndex = this.dealerIndex + 1;
+        var nextPlayer = this.players[this.turnIndex%4];
         nextPlayer.ChoosePlayCard();
     }
 
@@ -1498,44 +1130,35 @@ var Game = function () {
     this.GetLegalCardsForCurrentPlayerTurn = function() {
         var legalCards = [];
         var player = this.players[this.turnIndex%4];
-        if (this.trickCards.length === 0 && player.cards.length === 13) {
+        if (this.trickCards.length === 0) {
             for (var i=0; i<player.cards.length; i++) {
                 var card = player.cards[i];
-                if (card.id === '2C') {
+                if (this.isSpadesBroken || card.suit != 'S') {
                     legalCards.push(card);
-                    return legalCards;
                 }
             }
         } else {
-            if (this.trickCards.length === 0) {
-                for (var i=0; i<player.cards.length; i++) {
-                    var card = player.cards[i];
-                    if (this.isHeartsBroken || card.suit != 'H') {
-                        legalCards.push(card);
-                    }
-                }
-            } else {
-                var leadCard = this.trickCards[0];
-                for (var i=0; i<player.cards.length; i++) {
-                    var card = player.cards[i];
-                    if (card.suit === leadCard.suit) {
-                        legalCards.push(card);
-                    }
-                }
-            }
-
-            if (legalCards.length === 0) {
-                for (var i=0; i<player.cards.length; i++) {
-                    var card = player.cards[i];
-                    if (player.cards.length === 13) {
-                        if (card.suit === 'H' || card.id === 'QS') {
-                            continue;
-                        }
-                    }
+            var leadCard = this.trickCards[0];
+            for (var i=0; i<player.cards.length; i++) {
+                var card = player.cards[i];
+                if (card.suit === leadCard.suit) {
                     legalCards.push(card);
                 }
             }
         }
+
+        if (legalCards.length === 0) {
+            for (var i=0; i<player.cards.length; i++) {
+                var card = player.cards[i];
+                if (player.cards.length === 13) {
+                    if (card.suit === 'S') {
+                        continue;
+                    }
+                }
+                legalCards.push(card);
+            }
+        }
+    
 
         return legalCards;
     }
@@ -1580,7 +1203,7 @@ var Game = function () {
             }, 500);
         } else {
             var trickResult = this.GetTrickResult();
-            trickResult.trickTaker.currentRoundPoints += trickResult.points;
+            trickResult.trickTaker.currentRoundTricksTaken += 1;
             this.leadIndex = trickResult.trickTaker.playerPositionInt;
             this.AnimateTrickResult(trickResult);
         }
@@ -1594,8 +1217,8 @@ var Game = function () {
 
     this.PlayCard = function(card) {
         var player = this.players[this.turnIndex%4];
-        if (card.suit === 'H') {
-            this.isHeartsBroken = true;
+        if (card.suit === 'S') {
+            this.isSpadesBroken = true;
         }
 
         this.cardsPlayedThisRound.push(card);
@@ -1615,20 +1238,10 @@ var Game = function () {
         var trickResult = {};
         trickResult.highestCard = this.trickCards[0];
         trickResult.trickTaker = this.players[this.leadIndex];
-        trickResult.points = 0;
-        if (trickResult.highestCard.id === 'QS') {
-            trickResult.points = 13;
-        } else if (trickResult.highestCard.suit === 'H') {
-            trickResult.points = 1;
-        }
         for (var i=1; i<this.trickCards.length; i++) {
             var card = this.trickCards[i];
-            if (card.id === 'QS') {
-                trickResult.points = trickResult.points + 13;
-            } else if (card.suit === 'H') {
-                trickResult.points = trickResult.points + 1;
-            }
-            if (card.suit === trickResult.highestCard.suit && card.value > trickResult.highestCard.value) {
+            if ((card.suit === trickResult.highestCard.suit && card.value > trickResult.highestCard.value) ||
+                (card.suit === 'S' && trickResult.highestCard.suit !== 'S')) {
                 trickResult.highestCard = card;
                 trickResult.trickTaker = this.players[(this.leadIndex + i)%4];
             }
@@ -1641,17 +1254,6 @@ var Game = function () {
         FlashHighlightCardView(cardView);
 
         var delay = 1400;
-        if (trickResult.points === 13) {
-            AnimateScoreBubble(trickResult.trickTaker.playerPosition, 0, 13, 500);
-            delay += 500;
-        } else if (trickResult.points > 13) {
-            AnimateScoreBubble(trickResult.trickTaker.playerPosition, trickResult.points-13, 13, 500);
-            delay += 500;
-        } else if (trickResult.points > 0) {
-            AnimateScoreBubble(trickResult.trickTaker.playerPosition, trickResult.points, 0, 500);
-            delay += 500;
-        }
-
         setTimeout(function() {
             for (var i=0; i<game.trickCards.length; i++) {
                 var cardView = game.trickCards[i].cardView;
@@ -1666,23 +1268,10 @@ var Game = function () {
             }    
         }, delay);
 
-        if (trickResult.points > 0) {
-            // UpdatePlayerRoundScore
-            var scoreView = document.getElementById('player_score_' + trickResult.trickTaker.playerPosition);
-            if (trickResult.trickTaker.playerPosition === 'South') {
-                var southName = document.getElementById('player_name_South');
-                var loc = eval(southName.positionFunction);
-                with (southName.style) {
-                    transition = "0.3s linear";
-                    transitionDelay = "1.5s";
-                    top = loc[1] + 'px';
-                }
-            }
-            setTimeout(function() {
-                scoreView.innerHTML = trickResult.trickTaker.currentRoundPoints;
-            }, 2000);
-        }
-
+        setTimeout(function(player) {
+            UpdatePlayerRoundScore(player);
+        }, 2000, trickResult.trickTaker);
+    
         setTimeout(function() {
             if (game.players[0].cards.length !== 0) {
                 game.trickCards = [];
@@ -1709,266 +1298,48 @@ var Game = function () {
         }
     }
 
-    function AnimateScoreBubble(playerPosition, heartsPoints, spadesPoints, delay) {
-
-        setTimeout(function () {
-            
-            var posLeftHeart = 0;
-            var posLeftSpade = 0;
-            var posTop = 250 - 50;
-            var slideDistance = 200;
-            
-            if (heartsPoints > 0 && spadesPoints > 0) {
-                var heartTemplate = document.getElementById('BubbleScoreHeartTemplate');
-                var heartScoreBubble = heartTemplate.cloneNode(true);
-                heartScoreBubble.getElementsByClassName('BubbleScoreHeartsPoints')[0].innerText = "+" + heartsPoints;
-                posLeftHeart = window.innerWidth*0.5 - 50 - 25;
-                var spadeTemplate = document.getElementById('BubbleScoreSpadeTemplate');
-                var spadeScoreBubble = spadeTemplate.cloneNode(true);
-                spadeScoreBubble.getElementsByClassName('BubbleScoreSpadesPoints')[0].innerText = "+" + spadesPoints;
-                posLeftSpade = window.innerWidth*0.5 + 25;
-            } else if (spadesPoints > 0) {
-                var spadeTemplate = document.getElementById('BubbleScoreSpadeTemplate');
-                var spadeScoreBubble = spadeTemplate.cloneNode(true);
-                spadeScoreBubble.getElementsByClassName('BubbleScoreSpadesPoints')[0].innerText = "+" + spadesPoints;
-                posLeftSpade = window.innerWidth*0.5 - 42
-            } else if (heartsPoints > 0) {
-                var heartTemplate = document.getElementById('BubbleScoreHeartTemplate');
-                var heartScoreBubble = heartTemplate.cloneNode(true);
-                heartScoreBubble.getElementsByClassName('BubbleScoreHeartsPoints')[0].innerText = "+" + heartsPoints;
-                posLeftHeart = window.innerWidth*0.5 - 50
-            }
-            
-            switch (playerPosition) {
-                case 'South':
-                    slideDistance = window.innerHeight*0.5;
-                    var posLeftHeartEnd = posLeftHeart;
-                    var posLeftSpadeEnd = posLeftSpade;
-                    var posTopHeartEnd = posTop + slideDistance;
-                    var posTopSpadeEnd = posTop + slideDistance;
-                break;
-                case 'West':
-                    slideDistance = window.innerWidth*0.5;
-                    var posLeftHeartEnd = posLeftHeart - slideDistance;
-                    var posLeftSpadeEnd = posLeftSpade - slideDistance;
-                    var posTopHeartEnd = posTop;
-                    var posTopSpadeEnd = posTop;
-                break;
-                case 'North':
-                    slideDistance = window.innerHeight*0.5;
-                    var posLeftHeartEnd = posLeftHeart;
-                    var posLeftSpadeEnd = posLeftSpade;
-                    var posTopHeartEnd = posTop - slideDistance;
-                    var posTopSpadeEnd = posTop - slideDistance;
-                break;
-                case 'East':
-                    slideDistance = window.innerWidth*0.5;
-                    var posLeftHeartEnd = posLeftHeart + slideDistance;
-                    var posLeftSpadeEnd = posLeftSpade + slideDistance;
-                    var posTopHeartEnd = posTop;
-                    var posTopSpadeEnd = posTop;
-                    break;
-            }
-
-            if (heartsPoints > 0) {
-                heartScoreBubble.style.opacity = 1;
-                heartScoreBubble.style.transition = "none";
-                heartScoreBubble.style.transform = 'scale(0)';
-                heartScoreBubble.style.left = posLeftHeart + "px";
-                heartScoreBubble.style.top = posTop + "px";
-                heartScoreBubble.style.zIndex = 500;
-                heartScoreBubble.style.visibility = 'visible';
-
-                var cards_region = document.getElementById('cards_region');
-                cards_region.appendChild(heartScoreBubble);
-                setTimeout(function () {
-                    heartScoreBubble.style.transition = "0.3s ease-in";
-                    heartScoreBubble.style.transform = 'scale(1)';
-                    setTimeout(function () {
-                        heartScoreBubble.style.transition = "1s ease-in";
-                        heartScoreBubble.style.left = posLeftHeartEnd + 'px';
-                        heartScoreBubble.style.top = posTopHeartEnd + 'px';
-                        heartScoreBubble.style.opacity = 0;
-                        setTimeout(function () {
-                            cards_region.removeChild(heartScoreBubble);
-                        }, 1000);
-                    }, 1200);
-                }, 50);
-            }
-            if (spadesPoints > 0) {
-                spadeScoreBubble.style.opacity = 1;
-                spadeScoreBubble.style.transition = "none";
-                spadeScoreBubble.style.transform = 'scale(0)';
-                spadeScoreBubble.style.left = posLeftSpade + "px";
-                spadeScoreBubble.style.top = posTop + "px";
-                spadeScoreBubble.style.zIndex = 500;
-                spadeScoreBubble.style.visibility = 'visible';
-
-                var cards_region = document.getElementById('cards_region');
-                cards_region.appendChild(spadeScoreBubble);
-                setTimeout(function () {
-                    spadeScoreBubble.style.transition = "0.3s ease-in";
-                    spadeScoreBubble.style.transform = 'scale(1)';
-                    setTimeout(function () {
-                        spadeScoreBubble.style.transition = "1s ease-in";
-                        spadeScoreBubble.style.left = posLeftSpadeEnd + 'px';
-                        spadeScoreBubble.style.top = posTopSpadeEnd + 'px';
-                        spadeScoreBubble.style.opacity = 0;
-                        setTimeout(function () {
-                            cards_region.removeChild(spadeScoreBubble);
-                        }, 1000);
-                    }, 1200);
-                }, 50);
-            }
-
-        }, delay);
-    }
-
     this.FinishRound = function() {
-        var moonShootPlayer = null;
         var aRoundScores = [];
+        var aRoundBids = [];
+        var aRoundTricksTaken = [];
         for (var i=0; i<4; i++) {
-            if (this.players[i].currentRoundPoints === 26) {
-                moonShootPlayer = this.players[i];
-                for (var j=0; j<4; j++) {
-                    if (j === i) {
-                        aRoundScores.push(0);
-                        continue;
-                    }
-                    this.players[j].gameScore += 26;
-                    aRoundScores.push(26);
-                }
-                break;
-            }
-        }
+            var player = this.players[i];
+            aRoundBids.push(player.currentRoundBid);
+            aRoundTricksTaken.push(player.currentRoundTricksTaken);
 
-        if (moonShootPlayer === null) {
-            for (var i=0; i<4; i++) {
-                this.players[i].gameScore += this.players[i].currentRoundPoints;
-                aRoundScores.push(this.players[i].currentRoundPoints);
+            var bagsTaken = 0;
+            if (player.currentRoundBid == 0) {
+                if (player.currentRoundTricksTaken == 0) {
+                    aRoundScores.push(100);
+                } else {
+                    aRoundScores.push(-100);
+                }
+            } else if (player.currentRoundTricksTaken < player.currentRoundBid) {
+                aRoundScores.push(0);
+            } else {
+                bagsTaken = player.currentRoundTricksTaken - player.currentRoundBid;
+                aRoundScores.push(player.currentRoundBid*10 + bagsTaken);
             }
+            
+            if(GetSetting('setting_sandbaggingpenalty')) {
+                if (bagsTaken > 0) {
+                    // Penalize for overbags
+                    var previousBags = player.gameScore % 10;
+                    if (previousBags + bagsTaken > 10) {
+                        var score = aRoundScores[i] - 100;
+                        aRoundScores[i] = score;
+                    }
+                }
+            }
+
+            player.gameScore += aRoundScores[i];
         }
 
         this.roundScores.push(aRoundScores);
+        this.roundBids.push(aRoundBids);
+        this.roundTricksTaken.push(aRoundTricksTaken);
+        this.dealerIndex += 1;
 
-        for (var i=0; i<4; i++) {
-            this.players[i].currentRoundPoints = 0;
-        }
-
-        if (moonShootPlayer !== null) {
-            this.AnimateShootTheMoonForPlayer(moonShootPlayer);
-            if (moonShootPlayer.isHuman) {
-                var setting = 'stat_moons_shot_' + this.skillLevel;
-                var settingVal = GetStatistic(setting);
-                SetStatistic(setting, settingVal + 1);
-            }
-        } else {
-            this.ContinueAfterRoundResultAnimations();
-        }
-    }
-
-    this.AnimateShootTheMoonForPlayer = function(player) {
-        var heartsCardViews = [];
-        for (var i=0; i<cards.length; i++) {
-            if (cards[i].suit === 'H') {
-                heartsCardViews.push(cards[i].cardView);
-            }
-        }
-        heartsCardViews.sort(function(a,b){
-            return a.card.value - b.card.value;
-        });
-        heartsCardViews.push(this.GetCardFromString('QS').cardView);
-
-        var labelText = "";
-        var handReturnLeft = 0;
-        var handReturnTop = 0;
-        switch (player.playerPosition) {
-            case 'South':
-                labelText = "You shot the moon!";
-                handReturnLeft = window.innerWidth*0.5;
-                handReturnTop = window.innerHeight + 180;
-                break;
-            case 'West':
-                labelText = player.name + " shot the moon.";
-                handReturnLeft = -180;
-                handReturnTop = window.innerHeight*0.5;
-                break;
-            case 'North':
-                labelText = player.name + " shot the moon.";
-                handReturnLeft = window.innerWidth*0.5;
-                handReturnTop = -220;
-                break;
-            default:
-                labelText = player.name + " shot the moon.";
-                handReturnLeft = window.innerWidth + 220;
-                handReturnTop = window.innerHeight*0.5;
-                break;
-        }
-
-        var moonShootText = document.getElementById('moon_shoot_text');
-        moonShootText.innerHTML = labelText;
-        with (moonShootText.style) {
-            transition = '1s linear';
-            transitionDelay = '1s';
-            visibility = 'visible';
-            opacity = 1;
-        }
-
-        var curDelay = 0;
-        var delayIncrement = 0.1;
-        for (var i=0; i<heartsCardViews.length; i++) {
-            var cardView = heartsCardViews[i];
-            
-            var firstLeft = window.innerWidth*0.5 - 200;
-            var lastLeft = window.innerWidth*0.5  + 200;
-            var firstTop = window.innerHeight*0.4;
-            var lastTop = window.innerHeight*0.4;
-            var handWidth = lastLeft-firstLeft;
-            var cardSpacing = handWidth/(heartsCardViews.length-1);
-            var curLeft = firstLeft + i*cardSpacing;
-            var percent = (curLeft - firstLeft)/handWidth;
-            var radius = 400;
-            var distanceFromCenter = handWidth*(0.5 - percent);
-            var curveHeight = Math.sqrt(radius*radius-distanceFromCenter*distanceFromCenter) - Math.sqrt(radius*radius - handWidth*0.5*handWidth*0.5); 
-            var curveRotation = Math.asin(-distanceFromCenter/radius)*180/Math.PI;
-            var curTop = firstTop - curveHeight;
-            var endLeft = curLeft-cardLoweredWidth*0.5;
-            var endTop = curTop-cardLoweredHeight*0.5;
-            
-            flipDownCard(cardView, false);
-            setTimeout(flipUpCard, 100 + curDelay*1000, cardView);
-            with (cardView.style) {
-                transition = "0.3s ease-out";
-                transitionDelay = curDelay + "s";
-                left = endLeft + 'px';
-                top = endTop + 'px';
-                transform = 'rotate(' + curveRotation + 'deg)';
-                zIndex = i;
-                visibility = 'visible';
-            }
-            curDelay = curDelay + delayIncrement;
-        }
-
-        setTimeout(function(desLeft, desTop) {
-            for (var i=0; i<heartsCardViews.length; i++) {
-                var cardView = heartsCardViews[i];
-                with (cardView.style) {
-                    left = desLeft + 'px';
-                    top = desTop + 'px';
-                    transform = 'rotate(180deg)';
-                }
-            }
-            var moonShootText = document.getElementById('moon_shoot_text');
-            with (moonShootText.style) {
-                transition = '1s linear';
-                opacity = 0;
-            }
-            setTimeout(game.ContinueAfterRoundResultAnimations, 1000);
-        }, 4000, handReturnLeft, handReturnTop);
-
-    }
-
-    this.ContinueAfterRoundResultAnimations = function() {
         scoreboard.UpdateScores(this.roundNumber !== 1);
     }
 
@@ -1984,17 +1355,17 @@ var Game = function () {
 
     this.TryToGetWinningPlayer = function() {
         for (var i=0; i<4; i++) {
-            if (this.players[i].gameScore >= this.losingScore) {
+            if (this.players[i].gameScore >= this.winningScore) {
                 // Check to be sure that someone is the winner
                 var p = [];
                 for (var j=0; j<4; j++) {
                     p.push(this.players[j]);
                 }
                 p.sort(function(a,b) { 
-                    return a.gameScore - b.gameScore;
+                    return b.gameScore - a.gameScore;
                 });
                 var winner = p[0];
-                if (winner.gameScore < p[1].gameScore) {
+                if (winner.gameScore > p[1].gameScore) {
                     return winner;
                 }
                 return null;
@@ -2082,7 +1453,7 @@ var Game = function () {
             p.push(this.players[j]);
         }
         p.sort(function(a,b) { 
-            return a.gameScore - b.gameScore;
+            return b.gameScore - a.gameScore;
         });
         for (var i=0; i<4; i++) {
             if (p[i].isHuman) {
@@ -2404,13 +1775,9 @@ var Game = function () {
             'player_score_West',
             'player_score_North',
             'player_score_East',
-            'select_passing_cards_message',
-            'select_passing_cards_region_0',
-            'select_passing_cards_region_1',
-            'select_passing_cards_region_2',
             'hint_button',
-            'confirm_passing_cards_region',
-            'player_play_prompt'
+            'player_play_prompt',
+            'choose_bid_view'
             ];
         for (var i = 0; i < viewsToHide.length; i++) {
             var view = document.getElementById(viewsToHide[i]);
@@ -2446,13 +1813,9 @@ var Game = function () {
             'player_score_West',
             'player_score_North',
             'player_score_East',
-            'select_passing_cards_message',
-            'select_passing_cards_region_0',
-            'select_passing_cards_region_1',
-            'select_passing_cards_region_2',
             'hint_button',
-            'confirm_passing_cards_region',
-            'player_play_prompt'
+            'player_play_prompt',
+            'choose_bid_view'
         ];
         for (var i = 0; i < viewsToPosition.length; i++) {
             var view = document.getElementById(viewsToPosition[i]);

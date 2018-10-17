@@ -6,9 +6,8 @@ var Player = function() {
     this.playerPosition = "";
     this.playerPositionInt = 0;
     this.cards = [];
-    this.passingCards = [];
-    this.receivedCards = [];
-    this.currentRoundPoints = 0;
+    this.currentRoundBid = -1;
+    this.currentRoundTricksTaken = -1;
     this.gameScore = 0;
     this.isShownVoidInSuit = [false, false, false, false];
 
@@ -16,7 +15,8 @@ var Player = function() {
         this.name = aName;
         this.isHuman = aIsHuman;
         this.skillLevel = aSkill;
-        this.currentRoundPoints = 0;
+        this.currentRoundBid = -1;
+        this.currentRoundTricksTaken = -1;
         this.gameScore = 0;
         this.playerPosition = aPosition;
         switch (this.playerPosition) {
@@ -35,44 +35,25 @@ var Player = function() {
         }
     }
 
-    this.ChoosePassingCards = function() {
-        if (!this.isHuman) {
-            var bestCards = this.FindBestPassingCards();
-            for (var i=0; i<bestCards.length; i++) {
-                this.passingCards.push(bestCards[i]);
-                var indexOfBestCard = this.cards.indexOf(bestCards[i]);
-                this.cards.splice(indexOfBestCard, 1);
-            }
+    this.ChooseBid = function()  {
+        if (this.isHuman) {
+            game.PromptPlayerToChooseBid();
+        } else {
+            var bid = this.FindBestBid(game);
+            this.currentRoundBid = bid;
+            setTimeout(function(player) {
+                game.OnPlayerFinishedChoosingBid(player);
+            }, 500, this);
+            
         }
     }
 
-    this.FindBestPassingCards = function() {
+    this.FindBestBid = function(aGame) {
         switch (this.skillLevel) {
-            case "Easy":
-                return [this.cards[0], this.cards[1], this.cards[2]];
+            case 'Easy':
+                return Math.floor(Math.random() * 4) + 1;
             default:
-                var bestCards = [];
-                bestCards = bestCards.concat(this.cards);
-                bestCards = bestCards.concat(this.passingCards);
-                bestCards.sort(function(a,b) { 
-                    if (a.value === b.value) {
-                        if (a.value >= 12) {
-                            if (a.suit === "S") {
-                                return -1;
-                            } else if (b.suit == "S") {
-                                return 1;
-                            } else {
-                                return b.suitInt - a.suitInt;
-                            }
-                        } else {
-                            return b.suitInt - a.suitInt;
-                        }
-                    } else {
-                        return b.value - a.value;
-                    }
-                });
-
-                return [bestCards[0], bestCards[1], bestCards[2]];
+                return FindBidForPlayer(aGame, this);
         }
     }
 
@@ -85,133 +66,176 @@ var Player = function() {
         }
     }
 
-    this.FindBestPlayingCard = function(aGame, isForHint) {
+    this.FindBestPlayingCard = function(aGame) {
         var possiblePlays = aGame.GetLegalCardsForCurrentPlayerTurn();
         switch (this.skillLevel) {
             case 'Easy':
                 return possiblePlays[0];
             case 'Standard':
-                if (aGame.trickCards.length === 0) {
-                    // Lead with the lowest card value possible
-                    var play = possiblePlays[0];
-                    for (var i=1; i<possiblePlays.length; i++) {
-                        var possiblePlay = possiblePlays[i];
-                        if (possiblePlay.value < play.value) {
-                            play = possiblePlay;
-                        }
-                    }
-                    return play;
-                } else {
-                    var leadCard = aGame.trickCards[0];
-                    var play = possiblePlays[0];
-                    if (play.suit === leadCard.suit) {
-                        // Must play the same suit
-                        possiblePlays.sort(function(a,b) { 
-                            return a.value - b.value;
-                        });
+                return this.FindStandardPlayingCard(aGame, possiblePlays);
+            default:
+                return FindOptimalPlayForCurrentPlayer(aGame);
+        }
+    }
 
-                        var highestCardInTrick = leadCard;
-                        for (var i=1; i<aGame.trickCards.length; i++) {
-                            var playedCard = aGame.trickCards[i];
-                            if (playedCard.suit === leadCard.suit && playedCard.value > highestCardInTrick.value) {
-                                highestCardInTrick = playedCard;
-                            }
-                        }
-
-                        var currentPlayer = aGame.players[aGame.turnIndex%4];
-                        if (currentPlayer.cards.length === 13) {
-                            // First play of the round so there is no chance of taking a point
-                            // Play the highest card possible
-                            return possiblePlays[possiblePlays.length-1];
-
-                        } else if (aGame.trickCards.length<3) {
-                            // Play the highest card that will not take the hand
-                            var curPlay = possiblePlays[0];
-                            if (curPlay.value > highestCardInTrick) {
-                                // We have to play our lowest card and hope the next person is higher
-                                return curPlay;
-                            } else {
-                                // Play the highest value that is less than the current highest card in the trick
-                                for (var i=1; i<possiblePlays.length; i++) {
-                                    var possibleCard = possiblePlays[i];
-                                    if (possibleCard.value < highestCardInTrick.value) {
-                                        curPlay = possibleCard;
-                                    }
-                                }
-                                return curPlay;
-                            }
-                        } else {
-                            var curTrickPoints = 0;
-                            for (var i=0; i<aGame.trickCards.length; i++) {
-                                var card = aGame.trickCards[i];
-                                if (card.suit === 'H') {
-                                    curTrickPoints = curTrickPoints + 1;
-                                } else if (card.id === 'QS') {
-                                    curTrickPoints = curTrickPoints + 13;
-                                }
-                            }
-
-                            if (curTrickPoints === 0) {
-                                // No points so we can play the highest card of suit
-                                var highestCard = possiblePlays[possiblePlays.length-1];
-                                if (highestCard.id === 'QS' && possiblePlays.length > 1) {
-                                    highestCard = possiblePlays[possiblePlays.length-2];
-                                }
-                                return highestCard;
-                            } else {
-                                // Try to not take the trick but if we must, then play the highest card
-                                var curPlay = possiblePlays[0];
-                                if (curPlay.value > highestCardInTrick.value) {
-                                    // play our highest card
-                                    var highestCard = possiblePlays[possiblePlays.length-1];
-                                    if (highestCard.id === 'QS' && possiblePlays.length > 1) {
-                                        highestCard = possiblePlays[possiblePlays.length-2];
-                                    }
-                                    return highestCard;
-                                } else {
-                                    // Play the highest value that is less than the current highest card in the trick
-                                    for (var i=1; i<possiblePlays.length; i++) {
-                                        var possibleCard = possiblePlays[i];
-                                        if (possibleCard.value < highestCardInTrick.value) {
-                                            curPlay = possibleCard;
-                                        }
-                                    }
-                                    return curPlay;
-                                }
-                            }
-                        }
-                    } else {
-                        // Play the highest valued card we have
-                        possiblePlays.sort(function(a,b) { 
-                            // Queen of spades is highest
-                            if (a.id === 'QS') {
-                                return -1;
-                            } else if (b.id === 'QS') {
-                                return 1;
-                            }
-                            // Otherwise prefer AS and KS over hearts
-                            if (a.value === b.value) {
-                                if (a.value >= 12) {
-                                    if (a.suit === 'S') {
-                                        return -1;
-                                    } else if (b.suit === 'S') {
-                                        return 1;
-                                    } else {
-                                        return b.suitInt - a.suitInt;
-                                    }
-                                } else {
-                                    return b.suitInt - a.suitInt;
-                                }
-                            } else {
-                                return b.value - a.value;
-                            }
-                        });
-                        return possiblePlays[0];
+    this.FindStandardPlayingCard = function(aGame, possiblePlays) {
+        if (this.currentRoundTricksTaken < this.currentRoundBid) {
+            // Try to take the trick
+            if (aGame.trickCards.length === 0) {
+                // Lead with the lowest card value possible
+                var play = possiblePlays[0];
+                for (var i=1; i<possiblePlays.length; i++) {
+                    var possiblePlay = possiblePlays[i];
+                    if (possiblePlay.value < play.value) {
+                        play = possiblePlay;
                     }
                 }
-            case 'Pro':
-                var optimalPlayResult = FindOptimalPlayForCurrentPlayer(aGame, isForHint, false);
-                return optimalPlayResult.optimalCard;
+                return play;
+            } else {
+                var leadCard = aGame.trickCards[0];
+                var play = possiblePlays[0];
+                if (play.suit === leadCard.suit) {
+                    // Must play the same suit
+                    possiblePlays.sort(function(a,b) { 
+                        return a.value - b.value;
+                    });
+
+                    var highestCardInTrick = leadCard;
+                    for (var i=1; i<aGame.trickCards.length; i++) {
+                        var playedCard = aGame.trickCards[i];
+                        if ((playedCard.suit === leadCard.suit && playedCard.value > highestCardInTrick.value) ||
+                            (playedCard.suit == 'S' && highestCardInTrick.suit != 'S')) {
+                            highestCardInTrick = playedCard;
+                        }
+                    }
+
+                    // Check if we already cant take the trick
+                    var alreadyCantTakeTrick = true;
+                    for (var i=0; i<possiblePlays.length; i++) {
+                        var card = possiblePlays[i];
+                        if (card.value > highestCardInTrick.value) {
+                            alreadyCantTakeTrick = false;
+                            break;
+                        }
+                    }
+                    if (alreadyCantTakeTrick) {
+                        // play the lowest card possible
+                        return possiblePlays[0];
+                    }
+
+                    if (game.trickCards.length < 3) {
+                        // play our highest card
+                        var highestCard = possiblePlays[possiblePlays.length - 1];
+                        return highestCard;
+                    } else {
+                        if (this.currentRoundBid - this.currentRoundTricksTaken == 1) {
+                            // play our highest card
+                            var highestCard = possiblePlays[possiblePlays.length - 1];
+                            return highestCard;
+                        } else {
+                            // Play the lowest card that will take the trick
+                            for (var i=0; i<possiblePlays.length; i++) {
+                                var card = possiblePlays[i];
+                                if (card.value > highestCardInTrick.value) {
+                                    return card;
+                                }
+                            }
+                            // Safety - this should not happen
+                            return possiblePlays[0];
+                        }
+                    }
+                } else {
+                    // If we have a trump card, play it, otherwise play a low card
+                    possiblePlays.sort(function(a,b) { 
+                        if (a.suit == 'S' && b.suit != 'S') {
+                            return -1;
+                        } else if (b.suit == 'S' && a.suit != 'S') {
+                            return 1;
+                        } else {
+                            return a.value - b.value;
+                        }
+                    });
+                    return possiblePlays[0];
+                }
+            }
+        } else {
+            // Try not to take the trick
+            if (game.trickCards.length == 0) {
+                // Lead with the lowest card value possible
+                var play = possiblePlays[0];
+                for (var i=1; i<possiblePlays.length; i++) {
+                    var possiblePlay = possiblePlays[i];
+                    if (possiblePlay.value < play.value) {
+                        play = possiblePlay;
+                    }
+                }
+                return play;
+            } else {
+                var leadCard = aGame.trickCards[0];
+                var play = possiblePlays[0];
+                if (play.suit === leadCard.suit) {
+                    // Must play the same suit
+                    possiblePlays.sort(function(a,b) { 
+                        return a.value - b.value;
+                    });
+
+                    var highestCardInTrick = leadCard;
+                    for (var i=1; i<aGame.trickCards.length; i++) {
+                        var playedCard = aGame.trickCards[i];
+                        if ((playedCard.suit === leadCard.suit && playedCard.value > highestCardInTrick.value) ||
+                            (playedCard.suit == 'S' && highestCardInTrick.suit != 'S')) {
+                            highestCardInTrick = playedCard;
+                        }
+                    }
+
+                    if (game.trickCards.length < 3) {
+                    // Play the highest card that will not take the hand
+                    var curPlay = possiblePlays[0];
+                    if (curPlay.value > highestCardInTrick.value) {
+                        // We will have to play our lowest card and hope the next person has higher
+                        return curPlay;
+                    } else {
+                        // Play the highest value that is less than the current highest card in the trick
+                        for (var i = 1; i < possiblePlays.length; i++) {
+                            var possibleCard = possiblePlays[i];
+                            if (possibleCard.value < highestCardInTrick.value) {
+                                curPlay = possibleCard;
+                            }
+                        }
+                        return curPlay;
+                    }
+                    } else {
+                        // Try to not take the trick but if we must, then play the highest card
+                        var curPlay = possiblePlays[0];
+                        if (curPlay.value > highestCardInTrick.value) {
+                            // play our highest card
+                            var highestCard = possiblePlays[possiblePlays.length - 1];
+                            return highestCard;
+                        } else {
+                            // Play the highest value that is less than the current highest card in the trick
+                            for (var i = 1; i < possiblePlays.length; i++) {
+                                var possibleCard = possiblePlays[i];
+                                if (possibleCard.value < highestCardInTrick.value) {
+                                    curPlay = possibleCard;
+                                }
+                            }
+                            return curPlay;
+                        }
+                    }
+                } else {
+                    // Play the highest valued card we have that is not a trump spade
+                    possiblePlays.sort(function(a,b) { 
+                        if (a.suit == 'S' && b.suit != 'S') {
+                            return 1;
+                        } else if (b.suit == 'S' && a.suit != 'S') {
+                            return -1;
+                        } else {
+                            return b.value - a.value;
+                        }
+                    });
+                    return possiblePlays[0];
+                }
+            }
         }
     }
 }

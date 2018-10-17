@@ -3,18 +3,19 @@
 
 <head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122949887-1"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127156293-1"></script>
 	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'UA-122949887-1');
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+  		gtag('config', 'UA-127156293-1');
 	</script>
 
-	<title>Hearts Card Classic | Play online in your browser for free!</title>
+
+	<title>Spades Card Classic | Play online in your browser for free!</title>
 	<meta charset="utf-8">
-	<meta name="description" content="Play hearts online with this website.  This is the best free hearts game online. The site is built with HTML CSS and Javascript">
-	<meta name="author" content="Hearts Card Classic">
+	<meta name="description" content="Play spades online with this website.  This is the best free spades game online. The site is built with HTML CSS and Javascript">
+	<meta name="author" content="Spades Card Classic">
 
 	<link rel="stylesheet" href="menus.css">
 	<link rel="stylesheet" href="cards.css">
@@ -56,7 +57,7 @@
 
 	<div id="game_title">
 		<center>
-			<div class="t1">HEARTS</div>
+			<div class="t1">SPADES</div>
 			<div class="t2">CARD CLASSIC</div>
 		</center>
 	</div>
@@ -71,20 +72,8 @@
 		<div class="player_score" id="player_score_West"></div>
 		<div class="player_score" id="player_score_North"></div>
 		<div class="player_score" id="player_score_East"></div>
-		
-		<div id="select_passing_cards_message">Select 3 cards to pass left:</div>
-		<div id="select_passing_cards_region_0" class="select_passing_card_region"></div>
-		<div id="select_passing_cards_region_1" class="select_passing_card_region"></div>
-		<div id="select_passing_cards_region_2" class="select_passing_card_region"></div>
-
-		<div id="confirm_passing_cards_region">
-			<div id="confirm_passing_cards_shadow"></div>
-			<button id="confirm_passing_cards_button" onclick="game.passingCardsConfirmed()">Pass Cards</button>
-		</div>
 
 		<div id="player_play_prompt">Drop a card here</div>
-
-		<div id="moon_shoot_text"></div>
 
 		<button id="hint_button" onclick="game.OnHintButtonClick()">Hint</button>
 		
@@ -128,38 +117,55 @@
 
 	<div id="cards_region"></div>
 
-	<div id="adView" align="center">
-		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			<!-- Hearts Card Classic Web -->
-			<ins class="adsbygoogle"
-				style="display:inline-block;width:728px;height:90px"
-				data-ad-client="ca-pub-2857597813964310"
-				data-ad-slot="8562908545"></ins>
-			<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
+	<button id="get_more_games_button" onclick="PlayMoreGamesButtonPressed()">
+		Play More<br>Card Classics
+	</button>
+
 	</div>
 
+	<div id="adView" align="center">
+		<!-- Spades Card Classic Web -->
+		<!-- TODO: try this once online - might need to used fixed size ads instead of this auto-sized ad
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<ins class="adsbygoogle"
+			style="display:inline-block;width:728px;height:90px"
+			data-ad-client="ca-pub-2857597813964310"
+			data-ad-slot="5025354644"
+			data-ad-format="auto"
+			data-full-width-responsive="true"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+		-->
+	</div>
+
+	<div id="choose_bid_view">
+		<div id="choose_bid_title">Choose a bid:</div>
+		<div id="choose_bid_row_1">
+			<button class="choose_bid_button" id="choose_bid_button_0" onclick="game.OnChooseBidButtonPressed(0)">0</button>
+			<button class="choose_bid_button" id="choose_bid_button_1" onclick="game.OnChooseBidButtonPressed(1)">1</button>
+			<button class="choose_bid_button" id="choose_bid_button_2" onclick="game.OnChooseBidButtonPressed(2)">2</button>
+			<button class="choose_bid_button" id="choose_bid_button_3" onclick="game.OnChooseBidButtonPressed(3)">3</button>
+			<button class="choose_bid_button" id="choose_bid_button_4" onclick="game.OnChooseBidButtonPressed(4)">4</button>
+		</div>
+		<div id="choose_bid_row_2">
+			<button class="choose_bid_button" id="choose_bid_button_5" onclick="game.OnChooseBidButtonPressed(5)">5</button>
+			<button class="choose_bid_button" id="choose_bid_button_6" onclick="game.OnChooseBidButtonPressed(6)">6</button>
+			<button class="choose_bid_button" id="choose_bid_button_7" onclick="game.OnChooseBidButtonPressed(7)">7</button>
+			<button class="choose_bid_button" id="choose_bid_button_8" onclick="game.OnChooseBidButtonPressed(8)">8</button>
+		</div>
+		<div id="choose_bid_row_3">
+			<button class="choose_bid_button" id="choose_bid_button_9" onclick="game.OnChooseBidButtonPressed(9)">9</button>
+			<button class="choose_bid_button" id="choose_bid_button_10" onclick="game.OnChooseBidButtonPressed(10)">10</button>
+			<button class="choose_bid_button" id="choose_bid_button_11" onclick="game.OnChooseBidButtonPressed(11)">11</button>
+			<button class="choose_bid_button" id="choose_bid_button_12" onclick="game.OnChooseBidButtonPressed(12)">12</button>
+			<button class="choose_bid_button" id="choose_bid_button_13" onclick="game.OnChooseBidButtonPressed(13)">13</button>
+		</div>
+	</div>
 	
 	<div id="GameOverView">
 		<div id="GameOverResultText">You won!</div>
 		<div id="GameOverResultText2">vs the easy players</div>
-	</div>
-
-	<div id="BubbleScoreHeartTemplate" class="BubbleScoreHeart">
-		<table style="width: 95px; margin-top: 15px;">
-			<tr>
-				<td class="BubbleScoreHeartsPoints">+1</td>
-			</tr>
-		</table>
-	</div>
-
-	<div id="BubbleScoreSpadeTemplate" class="BubbleScoreSpade">
-		<table style="width: 75px; margin-top: 15px;">
-			<tr>
-				<td class="BubbleScoreSpadesPoints">+13</td>
-			</tr>
-		</table>
 	</div>
 
 	<button id="menu_button" onclick="MenuButtonPressed()">
@@ -169,8 +175,9 @@
 	<div id="menu_main" class="menu_view">
 		<button id="menu_main_close_button" class="close_button" onclick="menu_main_close_click()">X</button>
 		<button id="start_game_button" class="menu_button" onclick="ShowStartAGameMenu()">Start A Game</button>
-		<button id="statistics_button" class="menu_button" onclick="ShowStatisticsMenu()">Statistics</button>
 		<button id="settings_button" class="menu_button" onclick="ShowSettingsMenu()">Settings</button>
+		<button id="statistics_button" class="menu_button" onclick="ShowStatisticsMenu()">Statistics</button>
+		<button id="tutorial_button" class="menu_button" onclick="ShowTutorialMenu()">Tutorial</button>
 	</div>
 
 	<div id="menu_start_a_game" class="menu_view">
@@ -187,7 +194,7 @@
 		<div id="menu_difficulties_explained_title" class="menu_card_title">Computer Difficulty Levels Explained</div>
 		<button id="menu_difficulties_explained_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
 		<div id="menu_difficulties_explained_body">
-			For all three difficulty levels the cards are dealt completely at random to both you and to the computer players. Computer players are not given any special advantage and they do not know what cards are in your hand or in any other players' hands. The difference between the easy, standard, and pro players is the strategy used to choose their plays.  If you are finding that the computer is beating you, you will likely benefit from understanding how the computer chooses its next move.
+				For all three difficulty levels the cards are dealt completely at random to you and to the computer players.  Computer players are not given any special advantage and they do not know what cards are in your hand or in any other of the players' hands.  The difference between the easy, standard, and pro players is the strategy used to choose their plays.  If you are finding that the computer is beating you, you will likely benefit from understanding how the computer chooses its next move.
 			<br>
 			<br>
 			<center>
@@ -197,12 +204,12 @@
 			</center>
 			<table style="width:100%; text-align:left; font-size:12pt;">
 				<tr>
-					<td valign="top" width="80pt">Passing:</td>
-					<td>Chooses a random set of cards.</td>
+					<td valign="top" width="80pt">Bidding:</td>
+					<td>Chooses a random bid between 1 and 4</td>
 				</tr>
 				<tr>
 					<td valign="top" width="80pt">Playing:</td>
-					<td>Chooses a random valid card.</td>
+					<td>Chooses a random valid card</td>
 				</tr>
 			</table>
 			<br>
@@ -213,12 +220,12 @@
 			</center>
 			<table style="width:100%; text-align:left; font-size:12pt;">
 				<tr>
-					<td valign="top" width="80pt">Passing:</td>
-					<td>Chooses the three highest valued cards where value is determined by the card number (Ace, King, Queen, etc...) and suit (Spades, Hearts, Diamonds, Clubs).</td>
+					<td valign="top" width="80pt">Bidding:</td>
+					<td>The computer determines a bid by simulating, for each possible bid (0 to 13), the outcome of one hundred random deals of the remaining unseen cards.  When running the simulations, each player is assumed to use the 'Standard' playing strategy.  It then chooses the highest bid that resulted in an average number of tricks taken above the bid.</td>
 				</tr>
 				<tr>
 					<td valign="top" width="80pt">Playing:</td>
-				<td>When playing first, chooses the lowest card in hand.  When playing 2nd or 3rd, plays the highest card that will not take the trick, otherwise, plays the lowest card of suit.  When playing last, if there are points in the trick, plays the highest card that will not take the trick or if it must take the trick, plays the highest card of suit (avoiding the Queen of Spades).  If playing last and there are no points in the trick, plays the highest card in hand.  When the player is void in the lead suit, it will play its highest valued cards starting with QS, AS, AH, AD, AC, KS, KH, KD, KC, QH, QD, QC, etc...</td>
+				<td>When the player has not yet achieved their bid, then they attempt to take the trick by leading with their highest card of the lead suit.  When they have no chance to take the trick, they play their lowest valid card.  When the player has already achieved their bid, they attempt to not take the trick by playing their lowest card.  If they must take the trick, they use their highest card.</td>
 				</tr>
 			</table>
 			<br>
@@ -229,15 +236,14 @@
 			</center>
 			<table style="width:100%; text-align:left; font-size:12pt;">
 				<tr>
-					<td valign="top" width="80pt">Passing:</td>
-					<td>Chooses the three highest valued cards where value is determined by the card number (Ace, King, Queen, etc...) and suit (Spades, Hearts, Diamonds, Clubs).</td>
+					<td valign="top" width="80pt">Bidding:</td>
+					<td>The computer determines a bid by simulating, for each possible bid (0 to 13), the outcome of one hundred random deals of the remaining unseen cards.  When running the simulations, each player is assumed to use the 'Standard' playing strategy.  It then chooses the highest bid that resulted in an average number of tricks taken above the bid.</td>
 				</tr>
 				<tr>
 					<td valign="top" width="80pt">Playing:</td>
-					<td>The pro computer evaluates each valid play by simulating random card distributions of the unseen cards taking into account which players are known to be void in particular suits.  When simulating a game, each player plays the rest of the round using the Standard Playing algorithm (see above).  At the end of each simulated round, the final score is recorded and the average round score is determined for each valid play.  The play that results in the lowest average simulated round score is used.</td>
+					<td>The computer determines the probability of taking the trick for each valid play in their hand.  Probabilities are determined by simulating 100 possible distributions of the unseen cards and assuming each player will choose their play using the 'Standard' strategy.  If the player has already achieved their bid then they will play the least likely card to take the trick.  And if they have not yet achieved their bid then they will play the card that is most likely to take the trick.  If no card has more than a 50% chance of taking the trick, then the lowest probability card is played.</td>
 				</tr>
 			</table>
-
 		</div>
 	</div>
 
@@ -255,13 +261,22 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Losing score:</td>
+				<td>Sand bagging penalty:</td>
 				<td>
-					<select id="losing_score_dropdown" name="losing_score_dropdown" onchange="SettingLosingScoreChanged(this)">
-						<option value="50">50</option>
-						<option value="100">100</option>
-						<option value="200">200</option>
+					<label class="switch">
+						<input id="setting_sandbaggingpenalty_checkbox" type="checkbox" onclick="SettingSandBaggingPenaltyClicked(this)">
+						<span class="slider round"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>Winning score:</td>
+				<td>
+					<select id="winning_score_dropdown" name="winning_score_dropdown" onchange="SettingWinningScoreChanged(this)">
+						<option value="250">250</option>
 						<option value="500">500</option>
+						<option value="750">750</option>
+						<option value="1000">1000</option>
 					</select>
 				</td>
 			</tr>
@@ -347,13 +362,6 @@
 				<td class="menu_statistics_table_stat_total" id="menu_stat_4th_Total">0</td>
 			</tr>
 			<tr>
-				<td class="menu_statistics_table_category">Moons Shot</td>
-				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Easy"></td>
-				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Standard"></td>
-				<td class="menu_statistics_table_stat" id="menu_stat_moons_shot_Pro"></td>
-				<td class="menu_statistics_table_stat_total" id="menu_stat_moons_shot_Total">0</td>
-			</tr>
-			<tr>
 				<td class="menu_statistics_table_category">Win Percentage</td>
 				<td class="menu_statistics_table_stat" id="menu_stat_win_percent_Easy"></td>
 				<td class="menu_statistics_table_stat" id="menu_stat_win_percent_Standard"></td>
@@ -373,6 +381,87 @@
 		</table>
 	</div>
 	
+	<div id="menu_tutorial" class="menu_view">
+		<div id="menu_tutorial_title" class="menu_card_title">Tutorial</div>
+		<button id="menu_tutorial_close_button" class="close_button" onclick="menu_card_close_click()">X</button>
+		<div id="menu_tutorial_body">
+			Spades is a trick taking card game.  The object of each round is to take at least the number of tricks that you bid before the round begins.  The first player to reach the winning score (default 500) wins the game.  The spade suit is always trump.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Gameplay</u>
+				</div>
+			</center>
+			Each game is played in rounds and each round consists of a dealing stage, a bidding stage, a trick taking stage, and a scoring stage.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Dealing</u>
+				</div>
+			</center>
+			When the game starts, each player is randomly dealt 13 cards.  All cards are dealt to all players completely at random.  No special dealing is used to handicap or improve the hands for the computer players.  You are the first dealer and then the deal moves to the left after each round.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Bidding</u>
+				</div>
+			</center>
+			Starting with the player to the left of the dealer, each player bids on the minimum number of tricks that they expect to take for the round.  A bid of zero is called a 'nil bid' and results in a score of 100 if succesful and a score of -100 if any tricks are taken.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Trick Taking</u>
+				</div>
+			</center>
+			The player on the dealer's left makes the opening lead by playing a single card of their choice.  Players in clockwise fashion then play a card of their choice; they must follow suit if they can, otherwise they may play any card including a trump spade.  A player may not lead spades until a spade has been played to trump another trick.
+			<br>
+			<br>
+			The trick is won or taken by the player who played the highest card of the led suit, or if trumps were played, the highest trump card wins.  The player who wins any given trick leads next.  Play continues until all players have exhausted their hands.
+			<br>
+			<br>
+			<center>
+				<div style="font-size:16pt">
+					<u>Scoring</u>
+				</div>
+			</center>
+			Once a round is completed, each player is assigned a score based on whether they achieved their bid.  If the player took at least the number of tricks that they bid then they are awarded 10 points for each trick that they bid and 1 point for each trick over their bid.  Tricks taken that are more than the bid are called 'bags'.  If a player does not take at least the number of tricks that they bid then they score zero points.  In the case where a user bid nil, if they take no tricks then they are assigned 100 points, but if they take at least one trick then they lose 100 points.
+			<br>
+			<br>
+			An optional 'bagging' rule is designed to penalize players for underestimating the number of tricks they will take.  When this setting is turned on, players are assigned a 100 point penalty when they accumulate 10 bags.
+			<br>
+		</div>
+	</div>
+
+	<div id="play_more_games_menu">
+		<div id="play_more_games_title">Play More<br>Card Classics</div>
+		<button id="play_more_games_close_button" class="close_button" onclick="play_more_games_close_click()">X</button>
+		<a class="more_games_icon_button" href="http://www.heartscardclassic.com" style="margin-top: 50pt">
+			<span style="display: block; width:100%; height:100%">
+				<div id="more_games_icon_hearts"></div>
+				<div class="more_games_icon_title">
+					<center>
+						<div class="more_games_icon_title1">HEARTS</div>
+						<div class="more_games_icon_title2">CARD CLASSIC</div>
+					</center>
+				</div>
+			</span>
+		</a>
+		<a class="more_games_icon_button" href="http://www.cribbageclassic.com">
+			<span style="display: block; width:100%; height:100%">
+				<div id="more_games_icon_cribbage"></div>
+				<div class="more_games_icon_title">
+					<center>
+						<div class="more_games_icon_title1">CRIBBAGE</div>
+						<div class="more_games_icon_title2">CARD CLASSIC</div>
+					</center>
+				</div>
+			</span>
+		</a>
+	</div>
 </body>
 
 </html>

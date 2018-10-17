@@ -45,7 +45,7 @@ function ShowTitle() {
 	var el = document.getElementById("game_title");
 	with(el.style) {
 		WebkitTransition = MozTransition = OTransition = msTransition = "0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275)";
-		top = "26%";
+		top = "20%";
 		opacity = 1;
 	}
 }
@@ -151,7 +151,8 @@ function ShowSettingsMenu() {
 
 function InitializeSettingsView() {
 	document.getElementById("setting_hints_checkbox").checked = GetSetting('setting_hints');
-	document.getElementById("losing_score_dropdown").value = GetSetting('setting_losing_score');
+	document.getElementById("setting_sandbaggingpenalty_checkbox").checked = GetSetting('setting_sandbaggingpenalty');
+	document.getElementById("winning_score_dropdown").value = GetSetting('setting_winning_score');
 
 	var board_color = GetSetting('setting_board_color');
 	var allElems = document.getElementsByName('settings_boardbackground_selector');
@@ -174,8 +175,12 @@ function SettingHintsClicked(cb) {
 	SetSetting('setting_hints', cb.checked);
 }
 
-function SettingLosingScoreChanged(losingScoreSelect) {
-	SetSetting('setting_losing_score', losingScoreSelect.value);
+function SettingSandBaggingPenaltyClicked(cb) {
+	SetSetting('setting_sandbaggingpenalty', cb.checked);
+}
+
+function SettingWinningScoreChanged(winningScoreSelect) {
+	SetSetting('setting_winning_score', winningScoreSelect.value);
 }
 
 function BoardSelectorClick(radio) {
@@ -239,21 +244,18 @@ function InitializeStatisticsView() {
 	var total2nds = 0;
 	var total3rds = 0;
 	var total4ths = 0;
-	var totalMoonsShot = 0;
 	for (var i=0; i<difficulties.length; i++) {
 		var curDifficulty = difficulties[i];
 		var wins = GetStatistic('stat_wins_' + curDifficulty);
 		var stat2nds = GetStatistic('stat_2nd_' + curDifficulty);
 		var stat3rds = GetStatistic('stat_3rd_' + curDifficulty);
 		var stat4ths = GetStatistic('stat_4th_' + curDifficulty);
-		var moonsShot = GetStatistic('stat_moons_shot_' + curDifficulty);
 		var gamesPlayed = wins + stat2nds + stat3rds + stat4ths;
 		var gamesPlayedElement = document.getElementById('menu_stat_games_played_' + curDifficulty);
 		var winsElement = document.getElementById('menu_stat_wins_' + curDifficulty);
 		var stat2ndsElement = document.getElementById('menu_stat_2nd_' + curDifficulty);
 		var stat3rdsElement = document.getElementById('menu_stat_3rd_' + curDifficulty);
 		var stat4thsElement = document.getElementById('menu_stat_4th_' + curDifficulty);
-		var moonsShotElement = document.getElementById('menu_stat_moons_shot_' + curDifficulty);
 		var winPercentElement = document.getElementById('menu_stat_win_percent_' + curDifficulty);
 		if (gamesPlayed > 0) {
 			gamesPlayedElement.innerText = gamesPlayed;
@@ -261,7 +263,6 @@ function InitializeStatisticsView() {
 			stat2ndsElement.innerText = stat2nds;
 			stat3rdsElement.innerText = stat3rds;
 			stat4thsElement.innerText = stat4ths;
-			moonsShotElement.innerText = moonsShot;
 			winPercentElement.innerText = parseFloat(100*wins / gamesPlayed).toFixed(0) + "%";
 		} else {
 			gamesPlayedElement.innerText = "";
@@ -269,7 +270,6 @@ function InitializeStatisticsView() {
 			stat2ndsElement.innerText = "";
 			stat3rdsElement.innerText = "";
 			stat4thsElement.innerText = "";
-			moonsShotElement.innerText = "";
 			winPercentElement.innerText = "";
 		}
 		totalGamesPlayed = totalGamesPlayed + gamesPlayed;
@@ -277,14 +277,12 @@ function InitializeStatisticsView() {
 		total2nds = total2nds + stat2nds;
 		total3rds = total2nds + stat3rds;
 		total4ths = total2nds + stat4ths;
-		totalMoonsShot = totalMoonsShot + moonsShot;
 	}
 	var gamesPlayedElement = document.getElementById('menu_stat_games_played_Total');
 	var winsElement = document.getElementById('menu_stat_wins_Total');
 	var stat2ndsElement = document.getElementById('menu_stat_2nd_Total');
 	var stat3rdsElement = document.getElementById('menu_stat_3rd_Total');
 	var stat4thsElement = document.getElementById('menu_stat_4th_Total');
-	var moonsShotElement = document.getElementById('menu_stat_moons_shot_Total');
 	var winPercentElement = document.getElementById('menu_stat_win_percent_Total');
 	if (totalGamesPlayed > 0) {
 		gamesPlayedElement.innerText = totalGamesPlayed;
@@ -292,7 +290,6 @@ function InitializeStatisticsView() {
 		stat2ndsElement.innerText = total2nds;
 		stat3rdsElement.innerText = total3rds;
 		stat4thsElement.innerText = total4ths;
-		moonsShotElement.innerText = totalMoonsShot;
 		winPercentElement.innerText = parseFloat(100*totalWins / totalGamesPlayed).toFixed(0) + "%";
 	} else {
 		gamesPlayedElement.innerText = "0";
@@ -300,7 +297,6 @@ function InitializeStatisticsView() {
 		stat2ndsElement.innerText = "0";
 		stat3rdsElement.innerText = "0";
 		stat4thsElement.innerText = "0";
-		moonsShotElement.innerText = "0";
 		winPercentElement.innerText = "";
 	}
 }
@@ -330,8 +326,7 @@ function ResetStatisticsButtonClick() {
 		'stat_wins_',
 		'stat_2nd_',
 		'stat_3rd_',
-		'stat_4th_',
-		'stat_moons_shot_'
+		'stat_4th_'
 	];
 	for (var i=0; i<statsToReset.length; i++) {
 		for (var j=0; j<difficulties.length; j++) {
@@ -343,3 +338,28 @@ function ResetStatisticsButtonClick() {
 	InitializeStatisticsView();
 }
 
+function ShowTutorialMenu() {
+	var menuName = visibleMenuCards[visibleMenuCards.length-1];
+	MenuCardPressDown(menuName);
+	MenuCardAppear("menu_tutorial");
+}
+
+function PlayMoreGamesButtonPressed() {
+	var el = document.getElementById('play_more_games_menu');
+	with(el.style) {
+		WebkitTransition = MozTransition = OTransition = msTransition = "0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275)";
+		bottom = '10pt';
+		opacity = 1;
+		pointerEvents = "auto";
+	}
+}
+
+function play_more_games_close_click() {
+	var el = document.getElementById('play_more_games_menu');
+	with(el.style) {
+		WebkitTransition = MozTransition = OTransition = msTransition = "0.4s ease-in";
+		bottom = "-200pt";
+		opacity = 0;
+		pointerEvents = "none";
+	}
+}

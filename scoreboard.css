@@ -103,6 +103,14 @@
     top: 15px;
 }
 
+.scoreboardRoundBidsEntry {
+    position: absolute;
+    font-size: 9pt;
+    text-align: center;
+    width: 50px;
+    top: 15px;
+}
+
 .scoreboardRoundEntrySeparator {
     position: absolute;
     width: 1px;
